@@ -1,0 +1,105 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+     <%@ include file="../include/head.jsp" %>
+
+	<body>
+		<script>
+		window.onload = function()
+		{
+			$("#btnSend").click(function()
+			{
+				SendMsg();
+			});
+			
+			//1초 간격으로 실행하기
+			setInterval(function() 
+			{ 
+				GetMsg();
+			}, 1000);
+			
+			GetMsg();
+		}
+		
+		var last_cno = "0";  //마지막으로 받은 메시지 번호 
+		function GetMsg()
+		{
+			$.ajax({
+				type : "get",
+				url: "getmsg.jsp?cno=" + last_cno,
+				dataType: "xml",
+				success : function(data) 
+				{
+					// 통신이 성공적으로 이루어졌을때 이 함수를 타게된다.
+					$(data).find("msg").each(function(){			
+						var cno    = $(this).find("no").text();
+						var uname  = $(this).find("name").text();
+						var cnote  = $(this).find("note").text();
+						var cwdate = $(this).find("wdate").text();
+						var html = "";	
+						
+						var org_html = $("#chatMsg").html();
+						org_html = org_html + "<br>\n[" + uname + "] "+ cnote;
+						$("#chatMsg").html(org_html);
+						
+						last_cno = cno;					
+					});
+				}
+			});				
+		}
+		
+		function SendMsg()
+		{
+			if($("#msg").val() == "")
+			{
+				alert("발송 할 메시지를 입력하세요.");
+				$("#msg").focus();
+				return false;
+			}	
+			
+			$.ajax({
+				type : "post",
+				url: "sendmsg.jsp",
+				data: 
+				{
+					msg : $("#msg").val()
+				},
+				dataType: "html",
+				success : function(data) 
+				{
+					$("#msg").val("");
+					$("#msg").focus();
+					
+					GetMsg();
+				}
+			});	
+			
+			return false;				
+		}		
+		</script>
+		<style>
+			#chatMsg
+			{
+				width: 700px;
+				height: 300px;
+				background-color: #f4f4f4;
+				overflow: auto;
+			}
+		</style>		
+		<table border="1" width="700px">
+			<tr>
+				<td>
+					<div id="chatMsg">채팅방에 입장하였습니다.</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<form id="chat" name="chat" method="post" action="#" 
+				onsubmit="return SendMsg();">
+				<input type="text" id="msg" name="msg" size="80%">
+				<input type="button" id="btnSend" value="보내기">
+				</form>
+				</td>
+			</tr>
+		</table>		
+	</body>
+</html>

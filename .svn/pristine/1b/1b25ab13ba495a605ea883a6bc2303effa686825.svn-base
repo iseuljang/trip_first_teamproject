@@ -1,0 +1,33 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="../include/head.jsp" %> 
+
+<% String pageno  = request.getParameter("page");
+String type    = request.getParameter("type");
+String keyword = request.getParameter("keyword");
+String bkind   = request.getParameter("kind");
+String bno     = request.getParameter("no");
+if(pageno  == null) pageno  = "1";
+if(type    == null) type    = "T";
+if(keyword == null) keyword = "";
+if(bkind   == null) bkind   = "J";
+if(bno == null || bno.equals(""))
+{
+	response.sendRedirect("index.jsp");
+	return;	
+}
+
+//본인 게시글이 맞는지 확인
+boardDTO bdto = new boardDTO();
+boardVO  bvo   = bdto.Read(bno, false);
+if(!login.getUno().equals(bvo.getUno()))
+{
+	response.sendRedirect("index.jsp");
+	return;	
+}
+
+//게시글 삭제
+bdto.Delete(bno);
+
+response.sendRedirect("index.jsp?type=" + type + "&keyword=" +  keyword + "&kind=" + bkind);
+%>

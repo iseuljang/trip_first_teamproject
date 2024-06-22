@@ -1,0 +1,147 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+     <%@ include file="../include/head.jsp" %>
+<%
+ArrayList<chatVO> cvo_List  = new ArrayList<chatVO>();
+chatDTO cdto = new chatDTO();
+cvo_List = cdto.GetList_All();
+%>
+	<body>
+		<script>
+		window.onload = function()
+		{
+			//장근민==============================================
+			$("#btnSend").click(function()
+			{
+				if($("#msg").val() == "")
+				{
+					alert("발송 할 메시지를 입력하세요.");
+					$("#msg").focus();
+					return false;
+				}	
+				
+				$.ajax({
+					type : "post",
+					url: "sendmsg.jsp",
+					data: 
+					{
+						msg : $("#msg").val()
+					},
+					dataType: "html",
+					success : function(data) 
+					{
+						data = data.trim();
+						$("#talk").append(data);
+						
+					}
+				});	
+			});
+			
+			/* //1초 간격으로 실행하기
+			setInterval(function() 
+			{ 
+				location.reload();
+				$("#msg").val()
+			}, 1000); */
+			//장근민==============================================
+			
+			/* $("#btnSend").click(function()
+			{
+				SendMsg();
+			});
+			
+			
+			GetMsg(); */ 
+		}
+		
+		/* var last_cno = "0";  //마지막으로 받은 메시지 번호 
+		function GetMsg()
+		{
+			$.ajax({
+				type : "get",
+				url: "getmsg.jsp?cno=" + last_cno,
+				dataType: "xml",
+				success : function(data) 
+				{
+					// 통신이 성공적으로 이루어졌을때 이 함수를 타게된다.
+					$(data).find("msg").each(function(){			
+						var cno    = $(this).find("no").text();
+						var uname  = $(this).find("name").text();
+						var cnote  = $(this).find("note").text();
+						var cwdate = $(this).find("wdate").text();
+						var html = "";	
+						
+						var org_html = $("#chatMsg").html();
+						org_html = org_html + "<br>\n[" + uname + "] "+ cnote;
+						$("#chatMsg").html(org_html);
+						
+						last_cno = cno;					
+					});
+				}
+			});				
+		}
+		
+		function SendMsg()
+		{
+			if($("#msg").val() == "")
+			{
+				alert("발송 할 메시지를 입력하세요.");
+				$("#msg").focus();
+				return false;
+			}	
+			
+			$.ajax({
+				type : "post",
+				url: "sendmsg.jsp",
+				data: 
+				{
+					msg : $("#msg").val()
+				},
+				dataType: "html",
+				success : function(data) 
+				{
+					$("#msg").val("");
+					$("#msg").focus();
+					
+					GetMsg();
+				}
+			});	
+			
+			return false;				
+		} */		
+		</script>
+		<style>
+			#chatMsg
+			{
+				width: 700px;
+				height: 300px;
+				background-color: #f4f4f4;
+				overflow: auto;
+			}
+		</style>		
+		<table border="1" width="700px">
+			<tr>
+				<td id="talk">
+					<div id="chatMsg" style="height:40px;">채팅방에 입장하였습니다.</div>
+					<%
+					for(chatVO cvo : cvo_List)
+					{
+						%>
+						<div><%= cvo.getUnick() %> : <%= cvo.getCnote() %>[<%= cvo.getCwdate() %>] </div>
+						<%
+					}
+					%>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<form id="chat" name="chat" method="post" action="#" 
+				onsubmit="return SendMsg();">
+				<input type="text" id="msg" name="msg" size="80%">
+				<input type="button" id="btnSend" value="보내기">
+				</form>
+				</td>
+			</tr>
+		</table>		
+	</body>
+</html>

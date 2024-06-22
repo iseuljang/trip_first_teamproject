@@ -1,0 +1,38 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="../include/head.jsp" %>
+<link rel="stylesheet" type="text/css" href="../css/pwsearchok.css"> 
+
+<script>
+	function gotoLogin()
+	{
+		document.location = "../user/login.jsp";
+	}
+</script>
+
+<body>
+	<table border="0" width="100%">
+		<tr>
+			<td colspan="5">
+			</td>
+		</tr>
+	</table>
+	<table border="0" align="center" style="width: 60%;">
+		<tr>
+			<td style="text-align: center;"><img src="../image/logo.jpg" width="60%" height="60%" class="img" style="margin:180px 0px 20px 0px"></td>
+		</tr>
+		<tr>
+			<td><hr></td>					
+		</tr>
+		<tr>
+			<td>
+				<h1>비밀번호가 정상적으로 <br> 
+				<span style="color: blueviolet; font-size: 38px;">"변경"</span>	되었습니다.</h1><br>
+			</td>
+		</tr>
+		<tr>
+			<td><button type="button" class="login_button" onclick="gotoLogin();">로&nbsp;&nbsp;그&nbsp;&nbsp;인</button></td>
+		</tr>
+	</table>
+</body>
+</html>

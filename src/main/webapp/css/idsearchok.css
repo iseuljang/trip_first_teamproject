@@ -1,0 +1,44 @@
+@charset "utf-8";
+
+input
+{
+	width: 400px;
+	height: 30px;
+	font-size: 20px;
+	border-radius: 0.3em;
+}
+
+td
+{
+	text-align: center;
+	font-size: 15px;
+	font-weight: bolder;
+}
+
+.get_num_button
+{
+	border: 1px solid #d9d9d9;
+   	cursor:pointer; cursor:hand;
+  	background-color: skyblue;
+  	color: black;
+  	border-radius: 0.5em;
+  	width: 150px;
+  	height: 2em;
+			line-height: -3em;
+			font-size: 20px;
+			font-weight: bold;
+}
+
+.login_button
+{
+	border: 1px solid #d9d9d9;
+   	cursor:pointer; cursor:hand;
+  	background-color: skyblue;
+  	color: black;
+  	border-radius: 0.2em;
+  	width: 500px;
+  	height: 80px;
+			font-size: 50px;
+			font-weight: bold;
+			color: white;
+}

@@ -1,0 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="../include/head.jsp" %>    
+<%
+String msg = request.getParameter("msg");
+if(msg == null) return ;
+
+chatVO cvo = new chatVO();
+chatDTO cdto = new chatDTO();
+cdto.Insert(cvo);
+%>

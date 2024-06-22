@@ -1,0 +1,113 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+  <%@ include file="../include/head.jsp" %> 
+	<link rel="stylesheet" type="text/css" href="../css/masterMembercheck.css">    
+	
+	
+	<script>
+	$(document).ready(function()
+		{
+			/* 닉네임 작성란 포커스로직 */
+			$("#nickname").focus();
+			
+			/* 닉네임 조회 버튼시 로직 */
+			$("#check").on("click",function(){
+				if($("#nickname").val() != "")
+				{
+					$("#uid").html("<b>ezen</b>");
+					$("#uname").html("<b>홍길동</b>");
+					$("#nick").html($("#nickname").val());
+					$("#email").html("<b>ezen@hanmil.com</b>");
+					$("#retire").html("<b>N</b>");
+					$("#ustop").html("<b>Y</b>");
+					$("#ustoped").html("<b>2024.04.18 ~ 2024.05.01</b>");
+					return;
+				}
+			});
+			
+			/* 회원정지기간 입력로직 */
+			$("#apply").on("click",function(){
+				alert("적용됐습니다.");
+			});
+			
+			
+		});
+	</script>
+	
+<body>
+	<form method="post" name="masterMembercheck" id="masterMembercheck" >
+	<!-- 상단부분입니다 -->
+	
+	<!-- 중간부분입니다 -->
+	<div style="margin-top:80px"></div>
+	<table border="0" width="90%" align="center" style="vertical-align: top; margin-top:0px">
+		<tr>
+			<td id="td1">
+				<a href="masterMembercheck.jsp" id="href1"><b style="color:#1ABC9C">회원조회</b></a>
+				<hr>
+				<a href="masterGonggiwrite.jsp" id="href2"><b>공지사항</b></a>
+				<hr>
+				<br>
+				<hr>
+			</td>
+			<td style="background-color:gray;"></td>
+			<td id="td2">
+				<h1>조회할 회원닉네임을 입력해주세요</h1>
+				<br>
+				<table border="0" width="1280px" align="left">
+					<tr>
+						<td id="nick_w"><b style="font-size: 25px;">닉네임</b></td>
+						<td>
+							<input type="text" name="nickname" id="nickname">
+							<button type="button" id="check"><b>조회</b></button>
+						</td>
+					</tr>
+					<tr>
+						<td class="td">아이디 :</td>
+						<td id="uid"></td>
+					</tr>
+					<tr>
+						<td class="td">이름 :</td>
+						<td id="uname"></td>
+					</tr>
+					<tr>
+						<td class="td">닉네임 :</td>
+						<td id="nick"></td>
+					</tr>
+					<tr>
+						<td class="td">이메일 :</td>
+						<td id="email"></td>
+					</tr>
+					<tr>
+						<td class="td">탈퇴여부 :</td>
+						<td id="retire"></td>
+					</tr>
+					<tr>
+						<td class="td">회원이용정지설정 :</td>
+						<td>
+							&nbsp;&nbsp;
+							<select name="stop" id="stop">
+								<option value="1">1주일</option>
+								<option value="2">2주일</option>
+								<option value="3">한달</option>
+								<option value="4">영구</option>
+							</select>
+							&nbsp;&nbsp;
+							<button type="button" id="apply"><b>입력</b></button>
+						</td>
+					</tr>
+					<tr>
+						<td class="td">정지여부 :</td>
+						<td id="ustop"></td>
+					</tr>
+					<tr>
+						<td class="td">정지기간 :</td>
+						<td id="ustoped"></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	</form>
+</body>
+</html>

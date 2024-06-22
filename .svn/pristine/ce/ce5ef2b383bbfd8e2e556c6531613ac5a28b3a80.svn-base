@@ -1,0 +1,42 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="trip.dto.*" %>
+<%
+String uid = request.getParameter("uid");
+
+if(uid == null)
+{
+	out.println("00");
+	return;
+}
+
+if(uid.equals(""))
+{
+	out.println("-1");
+	return;
+}
+
+//아이디 길이가 4자 미만일시
+if(uid.length() < 4)
+{
+	out.println("03");
+	return;
+}
+
+//아이디 길이가 20자 초과일시
+if(uid.length() > 20)
+{
+	out.println("04");
+	return;
+}
+
+userDTO dto = new userDTO();
+if(dto.CheckID(uid) == true)
+{	//등록된 ID
+	out.println("01");
+
+}else
+{	//사용 가능한 ID
+	out.println("02");
+}
+%>

@@ -1,0 +1,72 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="trip.vo.*" %>    
+<%@ page import="trip.dto.*" %>    
+<%@ include file="../include/head.jsp" %>
+<link rel="stylesheet" type="text/css" href="../css/joinok.css">
+<%
+request.setCharacterEncoding("UTF-8");
+
+String uid     = request.getParameter("uid");
+String upw     = request.getParameter("upw");
+String uname   = request.getParameter("uname");
+String unick   = request.getParameter("unick");
+String email   = request.getParameter("email");
+String uicon   = request.getParameter("uicon");
+String season   = request.getParameter("season");
+String local   = request.getParameter("local");
+
+if( uid == null || upw == null )
+{
+	response.sendRedirect("join.jsp");
+	return;
+}
+
+//회원정보 등록
+userVO vo = new userVO();
+vo.setUid(uid);
+vo.setUpw(upw);
+vo.setUname(uname);
+vo.setUnick(unick);
+vo.setEmail(email);
+vo.setUicon(uicon);
+vo.setSeason(season);
+vo.setLocal(local);
+//회원가입
+userDTO dto = new userDTO();
+dto.Join(vo);
+%>    
+	<script>
+		function gotoLogin()
+		{
+			document.location = "../user/login.jsp";
+		}
+		
+	</script>
+
+		<table border="0" align="center" style="width: 60%;">
+			<tr>
+				<td style="text-align: center;"><img src="../image/logo.jpg" width="60%" height="60%" class="img"></td>
+			</tr>
+			<tr>
+				<td><hr></td>					
+			</tr>
+			<tr>
+				<td>
+					<h1>축하합니다.!<br> 
+					<span style="color:rgb(192, 57, 43); font-size: 50px;"><%= uid %></span>님 회원가입이<br>
+					완료되었습니다.</h1>
+				</td>
+			</tr>
+			<tr>
+				<td><button type="button" class="login_button" onclick="gotoLogin();">로&nbsp;&nbsp;그&nbsp;&nbsp;인</button></td>
+			</tr>
+			<tr>
+				<td style="font-size: 15px; font-weight: bold;">
+					비밀번호가 기억나지 않는다면?
+					<a href="../idsearch/pwsearch1.jsp">비밀번호 찾기</a>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

@@ -1,0 +1,98 @@
+@charset "utf-8";
+
+
+*{
+  font-family: 'Noto Sans KR', sans-serif;
+  list-style: none;
+  text-decoration: none;
+  border-collapse: collapse;
+  margin:auto;
+  padding: 0px;
+  color: #000;
+}
+	
+	
+
+.intro_bg{
+	 margin-top:100px;
+	 
+		
+}
+
+.header{
+  background-image: url("../image/logo.jpg");
+  background-size: 100%;
+  width: 400px;
+  height: 80px;
+  display:block;
+}
+.hline1{
+  margin-top: 20px;	
+  width: 500px;
+  height: 10px;
+  border-top: solid #E1E1E1;
+  display: block;
+}
+.str{
+  
+  font-size:30px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom:40px;
+  
+}
+.attach{
+	background-image: url("../image/glasses.jpg");
+	background-position: 80% 10%;
+	width:80px;
+	height:70px;
+	border-radius: 10px 0px 0px 10px;
+	
+}
+
+.attach1{
+	width:400px;
+	height:70px;
+	border: 1px solid #CECECE;
+	border-radius: 0px 10px 10px 0px;
+	background: white; 
+	color: black;
+	line-height: 50px;
+	cursor: pointer;
+	text-align: center;
+	font-size:30px;
+  	font-weight: bold;
+	}
+	
+input::placeholder {
+ 	color: #E0E0E0;
+}	
+	
+.attach2{
+	width:480px;
+	height:70px;
+	border: 1px solid #CECECE;
+	border-radius: 10px 10px 10px 10px;
+	background: #3498DB; 
+	color: white;
+	line-height: 60px;
+	cursor: pointer;
+	text-align: center;
+	margin:10px auto 10px auto;
+	font-size:40px;
+  	font-weight: bold;
+	}
+.str1{
+	font-size:20px;
+  	text-align: center;
+	}
+	
+.str2{
+	font-size:20px;
+  	text-align: center;
+  	color:#3498DB;
+	}
+	
+	
+	
+	

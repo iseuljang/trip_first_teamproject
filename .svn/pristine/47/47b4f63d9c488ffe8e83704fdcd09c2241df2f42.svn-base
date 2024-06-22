@@ -1,0 +1,26 @@
+<%@ page language="java" contentType="text/xml; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="trip.vo.*" %>
+<%@ page import="trip.dao.*" %>    
+<%@ page import="trip.dto.*" %>    
+<%@ page import="java.io.*" %>
+<%@ page import="java.util.*" %>  
+<%
+request.setCharacterEncoding("UTF-8");
+
+//로그인 여부를 세션을 통해 검사한다
+userVO login  = (userVO)session.getAttribute("login");
+
+ArrayList<chatVO> cvo_List  = new ArrayList<chatVO>();
+chatDTO cdto = new chatDTO();
+//채팅방 전체내용을 가져온다
+cvo_List = cdto.GetList_All();
+
+//이전채팅내용 전체불러오기
+for(chatVO cvo : cvo_List)
+{
+	%>
+	<div><%= cvo.getUnick() %> : <%= cvo.getCnote() %>[<%= cvo.getCwdate() %>] </div>
+	<%
+}
+%>

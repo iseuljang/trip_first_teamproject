@@ -1,0 +1,223 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+  <%@ include file="../include/head.jsp" %> 
+<link rel="stylesheet" type="text/css" href="../css/user_info.css">   
+
+<script>
+	$(document).ready(function(){
+		/* 닉네임 포커스 로직 */
+		$("#nick").focus();
+		
+		/* 맨위 오른쪽 숨긴메뉴 로직 */
+		$(".tbtn")
+			.click(function()
+			{
+				if($("#log_info").is(":visible"))
+				{
+					$("#log_info").css("display","none");
+				}else
+				{
+					$("#log_info").toggle();
+				}
+			})
+			
+		$("#login_info")
+			.mouseover(function()
+			{
+				$(".log_td").css("background-color", "gray");
+			})
+			.mouseout(function()
+			{
+				$(".log_td").css("background-color", "");
+			})
+			
+		/* 닉네임 & 비번 엔터시 저장로직 */
+		$("#nick,#pw").keyup(function(event){
+			if(event.keyCode == 13)
+			{
+				save();
+				return;
+			}
+		});
+	});
+		
+	/* 저장로직 */
+	function save1()
+	{
+		if($("#nick").val() == "")
+		{
+			$("#nick").focus();
+			alert("닉네임을 입력하세요");
+			return;
+		}
+		if($("#pw").val() == "")
+		{
+			$("#pw").focus();
+			alert("비밀번호를 입력하세요");
+			return;
+		}
+		if(confirm("저장하시겠습니까?") == true)
+		{
+			alert("저장이 완료되었습니다.");
+			return false;
+		}
+		
+	};
+	
+	/* 취소로직 */
+	function cancel()
+	{
+		window.location = "../firstmain/lobby.jsp";
+	};
+	
+	/* 회원탈퇴로직 */
+	function gotoRetire()
+	{
+		window.location = "../user/retire.jsp";			
+	};
+</script>
+	
+<body>
+	<form method="post" name="user_info" id="user_info" action="user_infook.html">
+		<!-- 상단부분 -->
+		
+		<!-- 중간부분 -->
+		<table border="0" width="80%" align="center" >
+			<tr>
+				<td style="width: 20%; vertical-align: top;">
+					<table border="0" align="center" width="80%" height="550px">
+						<tr>
+							<td align="center"><img src="../image/사용자사진.png"></td>
+						</tr>
+						<tr>
+							<td align="center"><h1>닉네임</h1></td>
+						</tr>
+						<tr>
+							<td> 아이디 : ezen</td>
+						</tr>
+						<tr>
+							<td> 이메일 : ezen@gmail.com</td>
+						</tr>
+						<tr>
+							<td>
+								<button id="retire" type="button" onclick="gotoRetire();" style="border-radius:0.5em; border:0px; width:120px; height:30px; font-size:20px;"><b>회원탈퇴</b></button>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td>
+					<div class="vertical_line"></div>
+				</td>
+				<td>
+					<table border="0" width="80%" align="center">
+						<tr>
+							<td width="20%" rowspan="2"><img src="../image/사용자사진.png"></td>
+							<td><h1>닉네임</h1></td>
+						</tr>
+						<tr>
+							<td>이메일@ezen.naver.com</td>
+						</tr>
+					</table>
+					<hr style="margin-left:8%; margin-right:8%; border:2px solid lightgray;">
+					<table border="0" width="80%" align="center" >
+						<tr>
+							<td align="left" style="font-size:20px;">
+								&nbsp;&nbsp;&nbsp;&nbsp;<b>닉네임 &nbsp;:</b> <input type="text" name="nick" id="nick">
+							</td>
+						</tr>
+						<tr>	
+							<td align="left" style="font-size:20px;">
+								&nbsp;&nbsp;<b>비밀번호 :</b> <input type="text" name="pw" id="pw">
+							</td>
+						</tr>
+					</table>
+					<table border="0" align="center" width="80%">
+						<tr>
+							<td colspan="3" style="text-align:left;"><h2>관심분야</h2></td>
+						</tr>
+						<tr>
+							<td>
+								<select name="season" id="season" style="width: 200px;">
+									<option>계절</option>
+									<option value="1">봄</option>
+									<option value="2">여름</option>
+									<option value="3">가을</option>
+									<option value="4">겨울</option>
+								</select>
+							</td>
+							<td>
+								<select name="local" id="local" style="width: 200px;">
+									<option>지역</option>
+									<option value="5">서울광역시</option>
+									<option value="6">대전광역시</option>
+									<option value="7">광주광역시</option>
+									<option value="8">부산광역시</option>
+									<option value="9">대구광역시</option>
+									<option value="10">인천광역시</option>
+									<option value="11">울산광역시</option>
+									<option value="12">경기도</option>
+									<option value="13">강원도</option>
+									<option value="14">충청북도</option>
+									<option value="15">충청남도</option>
+									<option value="16">전북특별자치도</option>
+									<option value="17">세종특별자치도</option>
+									<option value="18">전라남도</option>
+									<option value="19">경상북도</option>
+									<option value="20">경상남도</option>
+									<option value="21">제주도</option>
+								</select>
+							</td>
+							<td>
+								<select name="human" id="human" style="width: 200px;">
+									<option>동행</option>
+									<option value="22">연인</option>
+									<option value="23">친구</option>
+									<option value="24">가족</option>
+									<option value="25">반려동물</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<select name="move" id="move" style="width: 200px;">
+									<option>이동</option>
+									<option value="26">자차</option>
+									<option value="27">기차</option>
+									<option value="28">도보</option>
+									<option value="29">비행기</option>
+									<option value="30">자전거</option>
+								</select>
+							</td>
+							<td>
+								<select name="schedule" id="schedule" style="width: 200px;">
+									<option>일정</option>
+									<option value="31">1박2일</option>
+									<option value="32">2박3일</option>
+									<option value="33">3박4일</option>
+									<option value="34">4박5일</option>
+								</select>
+							</td>
+							<td style="text-align: left; width: 100px;">
+								<select name="inout" id="inout" style="width: 200px;">
+									<option>장소</option>
+									<option value="35">실내</option>
+									<option value="36">실외</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3" style="text-align: right;"></td>
+						</tr>
+						<tr>
+							<td colspan="3" style="text-align: right;">
+								<button type="button" class="modify"  style="background-color: orangered;" onclick="cancel();">취소</button>
+								<button type="button" class="modify" id="save" style="background-color: dodgerblue;" onclick="save1();">저장</button>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

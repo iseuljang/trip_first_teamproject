@@ -1,0 +1,80 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+ <%@ include file="../include/head.jsp" %>
+<link rel="stylesheet" type="text/css" href="../css/pwsearch3.css">
+
+<script>
+window.onload = function()
+{
+	$("#attach1-1").focus();
+	
+	$("#attach1-3").keyup(function(event){
+		if(event.keyCode == 13)
+		{
+			search();	
+		}
+	});
+	
+	$("#attach2").click(function(event){
+			search();	
+	});
+}	
+
+function search()
+{
+	if($("#attach1-1").val() == "")
+	{
+		alert("비밀번호를 입력해주세요.");
+		$("#attach1-1").focus();
+		return false;
+	}	
+		
+	if($("#attach1-2").val() == "")
+	{
+		alert("비밀번호확인을 입력해주세요.");
+		$("#attach1-2").focus();
+		return false;
+	}	
+	
+	if($("#attach1-1").val() != $("#attach1-2").val())
+	{
+		alert("비밀번호를 잘못 입력하였습니다.");
+		$("#attach1-1").focus();
+		return false;
+	}	
+	else
+	{
+		document.location = "pwsearchok.jsp";
+		return true;
+	}
+
+}
+
+</script>
+</head>
+<body>
+<div id= "memberchange" name = "memberchange">
+	<div class="intro_bg">
+		<div class="header"></div>
+	</div>
+</div>
+<div class="hline1"></div>		
+<div class="str">이메일 인증이 완료되었습니다.</div>
+<div class="str1">새로운 비밀번호를 입력해주세요</div>
+<table >
+	<tr>
+	<td class="attach">비밀번호</td>
+	<td><input type="password" id="attach1-1" class="attach1" placeholder="비밀번호를 입력해주세요"></td>
+	</tr>
+</table>
+<div style="margin-bottom:10px"></div>
+<table>
+	<tr>
+	<td class="attach">비밀번호 확인</td>
+	<td><input type="password" id="attach1-2" class="attach1" placeholder="비밀번호를 다시 입력해주세요"></td>
+	</tr>
+</table>
+<div style="margin-bottom:60px"></div>
+<div id="attach2" class="attach2">다 음</div>
+</body>
+</html>

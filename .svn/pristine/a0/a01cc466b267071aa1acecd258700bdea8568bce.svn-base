@@ -1,0 +1,99 @@
+@charset "utf-8";
+
+
+
+.intro
+{
+	vertical-align: bottom;
+	text-align: right;
+	border-spacing: 0px;
+	padding: 0px;
+	color: whitesmoke;
+	font-size:1.3rem;
+	text-shadow:1px 1px 10px #444;
+}
+
+
+.tbtn
+{
+	border: 1px solid #d9d9d9;
+   	cursor:pointer; cursor:hand;
+  	background-color: #d9d9d9;
+  	color: black;
+  	padding: 5px;
+  	border-radius: 2em;
+  	width: 150px;
+  	height: 3em;
+	line-height: 3em;
+	text-align:center;
+	vertical-align:center;
+	font-size: 20px;
+}
+
+input 
+{
+	width:500px;
+	height: 30px;
+	font-size:15px;
+}
+
+
+#first_td
+{
+	text-align: right;
+}
+
+.buttons
+{
+	border: 0px;
+   	cursor:pointer; cursor:hand;
+  	background-color: white;
+  	color: black;
+  	border-radius: 0.5em;
+  	width: 120px;
+  	height: 60px;
+	line-height: -3em;
+	font-size: 25px;
+}
+
+.keywords
+{
+	text-align: left;
+	text-shadow:0px 0px 15px black;
+	font-size: 20px;
+	width:  1500px;
+	height: 70px;	
+}
+
+.buttons_td
+{
+	text-align: right;
+	padding-right: 10px;
+}
+
+.btn-like 
+{
+			color: transparent;
+  	text-shadow: 0 0 2px rgba(255,255,255,.7), 0 0 0 #000;
+}
+
+.btn-like:hover 
+{
+ 	 text-shadow: 0 0 0 #ea0;
+}
+
+.btn-like.done 
+{
+ 	 color: inherit;
+ 	 text-shadow: 0;
+}
+.btn-like.done:hover 
+{
+  	color: transparent;
+  	text-shadow: 0 0 0 #777;
+}
+
+.reply_btn
+{
+	cursor:pointer; cursor:hand;
+}

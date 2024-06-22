@@ -1,0 +1,461 @@
+package trip.dto;
+import trip.dao.*;
+import trip.vo.*;
+import trip.mail.*; 
+import java.io.*;
+import java.util.*;
+import java.text.*;
+
+// 회원정보 관리 클래스
+public class userDTO<SendMail> extends DBManager
+{
+	// 아이디 중복 검사 
+	// 리턴값 : true - 중복된 아이디, false - 중복이 안된 아이디
+	public boolean CheckID(String uid)
+	{	// 부모상속을 받은 경우라 super. / this. / 혹은 없이  DBOpen() 이렇게도 사용 가능
+		this.DBOpen();
+		String sql = "";
+		sql  = "select uid ";
+		sql += "from user ";
+		sql += "where uid = '" + uid + "' ";
+		this.OpenQuery(sql);
+		if(this.GetNext() == true)
+		{	//아이디가 있음
+			this.DBClose();
+			return true;
+		}
+		this.DBClose();
+		return false;
+	}
+	//아이디 중복 검사 오버로딩
+	public boolean CheckID(userVO vo)
+	{
+		return CheckID(vo.getUid());
+	}
+	
+	// 회원가입 처리 --return 값 :: true 등록성공   false 등록실패
+	public boolean Join(userVO vo)
+	{	//중복된 아이디 체크하기
+		if( CheckID(vo.getUid()) == true)
+		{	//아이디가 중복됨
+			return false;
+		}
+		
+		if( CheckUnick(vo.getUnick()) == true)
+		{	//닉네임 중복됨
+			return false;
+		}
+		
+		this.DBOpen();
+		String sql = "";
+		
+		sql = "insert into user ";
+		sql += "(uid,upw,uname,unick,email,uicon,season,local,human,move,schedule,uinout) ";
+		sql += "values ";
+		sql += " ( ";
+		sql += "'" + vo.getUid()     + "',";
+		sql += "md5('" + vo.getUpw() + "'),";
+		sql += "'" + vo.getUname()   + "',";
+		sql += "'" + vo.getUnick().replace("<","&lt;").replace(">","&gt;").replace("\n","\n<br>").replace("'", "''") + "',";
+		sql += "'" + vo.getEmail()  + "',";
+		sql += "'" + vo.getUicon()  + "',";
+		sql += "'" + vo.getSeason()  + "',";
+		sql += "'" + vo.getLocal()  + "',";
+		sql += "'" + vo.getHuman()  + "',";
+		sql += "'" + vo.getMove()  + "',";
+		sql += "'" + vo.getSchedule()  + "',";
+		sql += "'" + vo.getUinout()  + "'";
+		sql += " ) ";
+		this.RunSQL(sql);
+		
+		//등록된 회원 번호를 얻는다
+		sql = "select last_insert_id() as uno";
+		this.OpenQuery(sql);
+		this.GetNext();
+		vo.setUno(this.GetValue("uno"));
+		this.CloseQuery();
+		
+		this.DBClose();
+		return true;
+	}
+	
+	
+	// 회원 로그인 처리
+	public userVO Login(String uid, String upw)
+	{
+		this.DBOpen();
+		String sql = "";
+		sql  = "select ";
+		sql += "* ";
+		sql += "from user ";
+		sql += "where uid = '" + uid + "' and upw = md5('" + upw + "') and uretire = 'N' and ustop = 'N' ";
+		this.OpenQuery(sql);
+		if(this.GetNext() == false)
+		{
+			//회원정보가 없음
+			this.DBClose();
+			return null;
+		}
+		userVO vo = new userVO();
+		vo.setUno(this.GetValue("uno"));
+		vo.setUid(this.GetValue("uid"));
+		vo.setUname(this.GetValue("uname"));
+		vo.setUnick(this.GetValue("unick"));
+		vo.setAdmin(this.GetValue("admin"));
+		vo.setUicon(this.GetValue("uicon"));
+		vo.setEmail(this.GetValue("email"));
+		vo.setSeason(this.GetValue("season"));
+		vo.setLocal(this.GetValue("local"));
+		vo.setHuman(this.GetValue("human"));
+		vo.setMove(this.GetValue("move"));
+		vo.setSchedule(this.GetValue("schedule"));
+		vo.setUinout(this.GetValue("uinout"));
+		vo.setUstop(this.GetValue("ustop"));
+		vo.setUstopdate(this.GetValue("ustopdate"));
+		vo.setUstopend(this.GetValue("ustopend"));
+		this.DBClose();
+		return vo;
+	}
+	
+	//회원 탈퇴 처리(userVO)
+	public boolean Retire(userVO vo)
+	{
+		return Retire(vo.getUid(),vo.getUreason(),vo.getUpw());
+	}
+	
+	//회원 탈퇴 처리
+	public boolean Retire(String uid, String ureason, String upw)
+	{
+		if( this.DBOpen() == false )
+		{
+			return false;
+		}
+		String sql = "";
+		// 회원탈퇴여부 변경
+		sql  = "update user set ";
+		sql += "uretire = 'Y', ";
+		sql += "ureason = '" + ureason + "' ";
+		sql += "where uid = '" + uid + "' and upw = md5('" + upw +"')";
+		this.RunSQL(sql);
+		
+		this.DBClose();
+		return true;
+	}
+	
+	//계정이 탈퇴 혹은 정지된 상태임을 확인
+	public userVO CheckState(String uid, String upw)
+	{
+		userVO vo = new userVO();
+		if( this.DBOpen() == false )
+		{
+			return vo;
+		}
+		String sql = "";
+		sql  = "select uretire, ustop from user";
+		sql += " where uid = '" + uid + "' and upw = md5('" + upw +"')";
+		this.OpenQuery(sql);
+		
+		if(this.GetNext() == false)
+		{
+			//회원정보가 없음
+			this.DBClose();
+			return vo;
+		}
+		vo.setUstop(this.GetValue("ustop"));
+		vo.setUretire(this.GetValue("uretire"));
+		
+		this.DBClose();
+		return vo;
+	}
+	
+	//회원정지
+	public boolean Stop(String ustopdate,String uno)
+	{
+		if( this.DBOpen() == false )
+		{
+			return false;
+		}
+		String sql = "";
+		
+		//회원정지
+		if(!ustopdate.equals("0"))
+		{	// 1주일, 2주일, 한달 정지인 경우
+			sql  = "update user set ";
+			sql += "ustop = 'Y', ";
+			sql += "ustopdate = '" + ustopdate + "', ";
+			sql += "ustopend = DATE_ADD(NOW(), INTERVAL " + ustopdate + " DAY) ";
+			sql += "where uno = " + uno;
+			this.RunSQL(sql);
+		}else
+		{	// 영구정지인 경우
+			sql  = "update user set ";
+			sql += "ustop = 'Y', ";
+			sql += "ustopend = '2099-12-31' ";
+			sql += "where uno = " + uno;
+			this.RunSQL(sql);
+		}
+		
+		this.DBClose();
+		return true;
+	}
+	
+	//회원정지 해제
+	public boolean Stopend(String uid)
+	{
+		if( this.DBOpen() == false )
+		{
+			return false;
+		}
+		
+		String sql = "";
+		sql  = "update user set ";
+		sql += "ustop = 'N', ";
+		sql += "ustopdate = -1 ";
+		sql += "where uid = '" + uid + "' ";
+		sql += " and ustopend <= now()";
+		this.RunSQL(sql);
+		
+		this.DBClose();
+		return true;
+	}
+	
+	//회원정지일 얻기
+	public userVO Stopenddate(String uid)
+	{
+		if( this.DBOpen() == false )
+		{
+			return null;
+		}
+		
+		String sql = "";
+		sql  = "select uid,ustopenddate ";
+		sql += "from user ";
+		sql += "where uid = '" + uid + "' ";
+		this.OpenQuery(sql);
+		if(this.GetNext() == false)
+		{	
+			this.DBClose();
+			return null;
+		}
+		
+		userVO vo = new userVO();
+		vo.setUno(this.GetValue("uno"));
+		vo.setUid(uid);
+		vo.setUstop(this.GetValue("ustop"));
+		vo.setUstopdate(this.GetValue("ustopdate"));
+		vo.setUstopend(this.GetValue("ustopend"));
+		
+		this.DBClose();
+		return vo;
+	}
+	
+	//아이디 찾기 
+	public userVO Search(String uname,String email)
+	{
+		userVO vo = new userVO();
+		if( this.DBOpen() == false )
+		{
+			return vo;
+		}
+		String sql = "";
+		sql  = "select * ";
+		sql += "from user ";
+		sql += "where uname = '" + uname + "' and email = '" + email + "' ";
+		this.OpenQuery(sql);
+		if(this.GetNext() == true)
+		{	
+			vo.setUid(this.GetValue("uid"));
+			vo.setUname(this.GetValue("uname"));
+			this.DBClose();
+			return vo;
+		}else 
+		{
+			this.DBClose();
+			return vo;
+		}
+	}
+	
+	//비밀번호 변경
+	public boolean Change(userVO vo)
+	{
+		if( this.DBOpen() == false )
+		{
+			return false;
+		}
+		String sql = "";
+		//비밀번호 변경
+		if(!vo.getUpw().equals(""))
+		{
+			sql  = "update user set ";
+			sql += "upw = md5('" + vo.getUpw() + "') ";
+			sql += "where uid = '" + vo.getUid() + "' ";
+			this.RunSQL(sql);
+		}
+		
+		this.DBClose();
+		return true;
+	}
+	
+	// 기존 비밀번호와 같은지 비교 
+	public boolean DuplicateCheck(userVO uvo)
+	{
+		if( this.DBOpen() == false )
+		{
+			return false;
+		}
+		String sql = "";
+		//비밀번호 변경
+		sql  = "select * from user ";
+		sql += "where uid = '"+ uvo.getUid() +"' and "; 
+		sql += "uname = '"+ uvo.getUname() +"' and ";
+		sql += "upw = md5('" + uvo.getUpw() + "') ";
+		this.OpenQuery(sql);
+		if(this.GetNext() == false)
+		{	
+			this.DBClose();
+			return false;
+		}
+		
+		this.DBClose();
+		return true;
+	}
+	
+	// 내정보보기에서 수정
+	public boolean myChange(userVO vo)
+	{
+		if( this.DBOpen() == false )
+		{
+			return false;
+		}
+		
+		String sql = "";
+		//비밀번호 확인
+		sql  = "select * ";
+		sql += "from user ";
+		sql += "where upw = md5('" + vo.getUpw() + "') and uid = '" + vo.getUid() + "' ";
+		this.OpenQuery(sql);
+		if(this.GetNext() == false)
+		{	//비밀번호 틀림
+			this.DBClose();
+			return false;
+		}
+		
+		//닉네임 변경
+		if(vo.getUnick() != null && !vo.getUnick().equals("") )
+		{
+			sql  = "update user set ";
+			sql += "unick = '" + vo.getUnick().replace("<","&lt;").replace(">","&gt;").replace("\n","\n<br>").replace("'", "''") + "' ";
+			sql += "where uid = '" + vo.getUid() + "' ";
+			this.RunSQL(sql);
+		}
+		//선호조건 변경
+		if(( ( vo.getSeason() != null && vo.getLocal() != null ) || !vo.getSeason().equals("") && !vo.getLocal().equals("") ))
+		{
+			sql  = "update user set ";
+			sql += "season = '" + vo.getSeason() + "', ";
+			sql += "local = '" + vo.getLocal() + "', ";
+			sql += "human = '" + vo.getHuman() + "', ";
+			sql += "move = '" + vo.getMove() + "', ";
+			sql += "schedule = '" + vo.getSchedule() + "', ";
+			sql += "uinout = '" + vo.getUinout() + "' ";
+			sql += "where uid = '" + vo.getUid() + "'";
+			this.RunSQL(sql);
+		}
+		
+		//아이콘 변경
+		if(vo.getUicon() != null || !vo.getUicon().equals(""))
+		{
+			sql  = "update user set ";
+			sql += "uicon = '" + vo.getUicon() + "' ";
+			sql += "where uid = '" + vo.getUid() + "' ";
+			this.RunSQL(sql);
+		}
+		
+		this.DBClose();
+		return true;
+	}
+	
+	//이메일 인증
+	public boolean Email(String email)
+	{
+		if( this.DBOpen() == false )
+		{
+			return false;
+		}
+		
+		Sendmail mail = new Sendmail();
+		//System.out.println(mail.AuthCode(7));
+		mail.setFrom("gyr0204@naver.com");
+		mail.setTo(email);
+		mail.setAccount("gyr0204", "zxcv1234!!");
+		mail.setMail("메일인증 코드입니다.", "인증코드 : " + mail.AuthCode(6));
+		mail.sendMail();
+		
+		this.DBClose();
+		return true;
+	}
+	
+	//닉네임 중복 확인
+	public boolean CheckUnick(String unick)
+	{	
+		if( this.DBOpen() == false )
+		{
+			return false;
+		}
+		String sql = "";
+		sql  = "select unick ";
+		sql += "from user ";
+		sql += "where unick = '" + unick + "' ";
+		this.OpenQuery(sql);
+		if(this.GetNext() == true)
+		{	//닉네임 있음
+			this.DBClose();
+			return true;
+		}
+		this.DBClose();
+		return false;
+	}
+	
+	//닉네임으로 회원정보 조회
+	public userVO ShowUser(String unick)
+	{	
+		if( this.DBOpen() == false )
+		{
+			return null;
+		}
+		
+		String sql = "";
+		sql  = "select * ";
+		sql += "from user ";
+		sql += "where unick = '" + unick + "' ";
+		this.OpenQuery(sql);
+		if(this.GetNext() == false)
+		{
+			//회원정보가 없음
+			this.DBClose();
+			return null;
+		}
+		userVO vo = new userVO();
+		vo.setUno(this.GetValue("uno"));
+		vo.setUid(this.GetValue("uid"));
+		vo.setUname(this.GetValue("uname"));
+		vo.setUnick(this.GetValue("unick"));
+		vo.setAdmin(this.GetValue("admin"));
+		vo.setUicon(this.GetValue("uicon"));
+		vo.setEmail(this.GetValue("email"));
+		vo.setSeason(this.GetValue("season"));
+		vo.setLocal(this.GetValue("local"));
+		vo.setHuman(this.GetValue("human"));
+		vo.setMove(this.GetValue("move"));
+		vo.setSchedule(this.GetValue("schedule"));
+		vo.setUinout(this.GetValue("uinout"));
+		vo.setUstop(this.GetValue("ustop"));
+		vo.setUretire(this.GetValue("uretire"));
+		vo.setUstopdate(this.GetValue("ustopdate"));
+		vo.setUstopend(this.GetValue("ustopend"));
+		
+		this.DBClose();
+		return vo;
+	}
+	
+}

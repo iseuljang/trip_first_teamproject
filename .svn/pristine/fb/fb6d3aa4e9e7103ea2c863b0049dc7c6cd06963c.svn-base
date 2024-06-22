@@ -1,0 +1,36 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="trip.vo.*" %>
+<%@ page import="trip.dto.*" %> 
+<%
+
+String uname = request.getParameter("uname");
+String pwcheckagain = request.getParameter("pwcheckagain");
+System.out.println(uname);
+System.out.println(pwcheckagain);
+if(pwcheckagain.equals("false"))
+{
+	out.println("99");
+	return;
+}
+
+if(uname == null)
+{
+	out.println("00");
+	return;
+}
+
+if(uname.equals("") )
+{
+	out.println("-1");
+	return;
+}
+
+userDTO dto = new userDTO();
+if(dto.CheckUname(uname) == true)
+{	
+	out.println("01");
+}else
+{	
+	out.println("02");
+}
+%>

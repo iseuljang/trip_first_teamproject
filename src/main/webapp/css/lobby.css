@@ -1,0 +1,190 @@
+@charset "utf-8";
+
+
+*{
+  font-family: 'Noto Sans KR', sans-serif;
+  list-style: none;
+  text-decoration: none;
+  border-collapse: collapse;
+  margin:auto;
+  padding: 0px;
+  color: #000;
+}
+
+.header1{
+	margin:20px 1200px 0px 0px;
+  background-image: url("../image/logo.jpg");
+  background-size: 100%;
+  width: 300px;
+  height: 60px;
+  display:block;
+}
+.login{
+	width:170px;
+	height:50px;
+	border-radius: 30px 30px 30px 30px;
+	background: #E6E6E6; 
+	color: black;
+	line-height: 50px;
+	cursor: pointer;
+	text-align: center;
+	margin:auto;
+	margin-left:0px;
+	font-size:25px;
+  	display:block;
+	}
+
+	
+.hline{
+  margin-top: 20px;	
+  width: 1800px;
+  height: 10px;
+  border-top: solid #E1E1E1;
+  display: block;
+}	
+
+
+.intro_bg{
+	 margin-top:20px;
+}
+
+
+
+.title{
+  background-image: url("../image/logo.jpg");
+  background-size: 100%;
+  width: 600px;
+  height: 120px;
+  display:block;
+  margin-bottom:20px
+}
+
+.attach{
+	background-image: url("../image/glasses.jpg");
+	background-position: center center;
+	background-size: 90%;
+	width:80px;
+	height:80px;
+	border-radius: 10px 0px 0px 10px;
+}
+
+
+
+
+.attach1{
+	width:800px;
+	height:80px;
+	border: 1px solid #CECECE;
+	border-radius: 0px 10px 10px 0px;
+	background: white; 
+	color: black;
+	line-height: 50px;
+	cursor: pointer;
+	text-align: center;
+	font-size:40px;
+  	font-weight: bold;
+	}
+	
+input::placeholder {
+ 	color: #95A5A6;
+}	
+	
+	
+.str{
+  
+  font-size:30px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom:40px;
+  
+}
+	
+.attach2{
+	width:120px;
+	height:50px;
+	border: 1px solid #CECECE;
+	border-radius: 10px 10px 10px 10px;
+	background: #3498DB; 
+	color: white;
+	line-height: 50px;
+	cursor: pointer;
+	text-align: center;
+	margin:auto;
+	margin-left:800px;
+	font-size:25px;
+  	font-weight: bold;
+  	display:block;
+	}
+
+.attach3{
+	width:120px;
+	height:50px;
+	border: 0px solid #CECECE;
+	border-radius: 10px 10px 10px 10px;
+	background: #F9C45E; 
+	color: white;
+	line-height: 50px;
+	cursor: pointer;
+	text-align: center;
+	margin:auto;
+	font-size:25px;
+  	font-weight: bold;
+  	display:block;
+	}
+	
+.serch{
+	background-image: url("../image/팝업창.jpg");
+	background-size: 100%;
+	width:400px;
+	height:430px;
+
+	border-radius: 20px 20px 20px 20px;
+	border: 1px solid #CECECE;
+
+	border-radius: 20px 20px 20px 20px;
+	
+}
+.serch1-1{
+	background-image: url("../image/봄.jpg");
+	background-position: center center;
+	background-size: 110%;
+	width:320px;
+	height:210px;
+	border-radius: 20px 20px 20px 20px;
+	cursor: pointer;
+}
+.serch1-2{
+	background-image: url("../image/여름.jpg");
+	background-position: center center;
+	background-size: 110%;
+	width:320px;
+	height:210px;
+	border-radius: 20px 20px 20px 20px;
+	cursor: pointer;
+}
+.serch1-3{
+	background-image: url("../image/가을.jpg");
+	background-position: center center;
+	background-size: 110%;
+	width:320px;
+	height:210px;
+	border-radius: 20px 20px 20px 20px;
+	cursor: pointer;
+}
+.serch1-4{
+	background-image: url("../image/겨울.jpg");
+	background-position: center center;
+	background-size: 110%;
+	width:320px;
+	height:210px;
+	border-radius: 20px 20px 20px 20px;
+	cursor: pointer;
+}
+.serch2{
+	width:15px;
+	height:15px;
+}
+	
+	
+	
+	

@@ -1,0 +1,90 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+  <%@ include file="../include/head.jsp" %> 
+<link rel="stylesheet" type="text/css" href="../css/masterGonggiwrite.css">    
+
+	
+<script>
+$(document).ready(function()
+{
+	/* 마스터 공지작성버튼 로직 */
+	$("#sign").on("click",function(){
+		window.location = "masterwrite.jsp";
+	});
+	/* 마스터 공지삭제버튼 로직 */
+	$("#sign1").on("click",function(){
+		if(confirm("삭제하시겟습니까?") == true)
+		{
+			alert("삭제되었습니다.");
+			return true;
+		}
+	});
+});
+
+</script>
+
+<body>
+	<form method="post" name="masterGonggiwrite" id="masterGonggiwrite" action="masterwrite.jsp">
+	
+	<!-- 중간부분입니다 -->
+	<div style="margin-top:100px"></div>
+	<table border="0" width="90%" align="center">
+		<tr>
+			<td id="td1">
+				<a href="masterMembercheck.jsp" ><b>회원조회</b></a>
+				<hr>
+				<a href="masterGonggiwrite.jsp" ><b style="color:#1ABC9C">공지사항</b></a>
+				<hr>
+				<br>
+				<hr>
+			</td>
+			<td style="background-color:gray;"></td>
+			<td id="td2">
+				<table border="0" width="100%" style="border-collapse: collapse;">
+					<tr>
+						<td colspan="5" align="right">
+							<button type="button" id="sign1" class="sign100">삭제</button>
+							<button type="button" id="sign" class="sign100">등록</button>
+						</td>
+					</tr>
+					<tr  class="tr" id="tr_top">
+						<th>선택</th>
+						<th>번호</th>
+						<th>제목</th>
+						<th>시작일</th>
+						<th>종료일</th>
+					</tr>
+					<tr class="tr">
+						<td>
+							<input type="checkbox" name="checkbox1">
+						</td>
+						<td>3</td>
+						<td>당일치기로 떠나는 봄꽃여행</td>
+						<td>2024.04.08</td>
+						<td>2024.04.12</td>
+					</tr>
+					<tr class="tr">
+						<td>
+							<input type="checkbox" name="checkbox2">
+						</td>
+						<td>2</td>
+						<td>연인과 함께 하는 힐링여행</td>
+						<td>2024.04.05</td>
+						<td>2024.04.09</td>
+					</tr>
+					<tr class="tr" id="tr_bottom">
+						<td>
+							<input type="checkbox" name="checkbox3">
+						</td>
+						<td>1</td>
+						<td>봄맞이 추천 여행코스</td>
+						<td>2024.04.03</td>
+						<td>2024.04.05</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	</form>
+</body>
+</html>

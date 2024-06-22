@@ -1,0 +1,514 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="trip.util.*" %>
+<%@ page import="trip.vo.*" %>
+<%@ page import="trip.dto.*" %>
+<%@ include file="../include/head.jsp" %>
+<%
+request.setCharacterEncoding("UTF-8");
+
+String kind       = request.getParameter("kind"); 
+String pageno  = request.getParameter("page");  // 현재 페이지
+String type  = request.getParameter("type");    // 검색 타입(t = 제목에서 검색)
+
+// 6종키워드는 한번에 많이 체크 가능해서 배열로 받음
+String[] season   = request.getParameterValues("season"  );
+String[] local    = request.getParameterValues("local"   );
+String[] human    = request.getParameterValues("human"   );
+String[] move     = request.getParameterValues("move"    );
+String[] schedule = request.getParameterValues("schedule");
+String[] uinout   = request.getParameterValues("uinout"  );
+String[] keyword   = request.getParameterValues("keyword"  );
+
+if(kind  == null) kind  = "S";
+if(pageno  == null) pageno  = "1";
+if(type    == null) type    = "T";
+if(keyword == null) keyword = new String[] {""};
+
+// 메인페이지에서 
+/* String key_str = "";
+if(season!=null){
+	for( String item : season)
+	{
+		key_str += item + ",";
+	}
+}
+if(local!=null){
+	for( String item : local)
+	{
+		key_str += item + ",";
+	}
+}
+if(human!=null){
+	for( String item : human)
+	{
+		key_str += item + ",";
+	}
+}
+if(move!=null){
+	for( String item : move)
+	{
+		key_str += item + ",";
+	}
+}
+if(schedule!=null){
+	for( String item : schedule)
+	{
+		key_str += item + ",";
+	}
+}
+if(uinout!=null){
+	for( String item : uinout)
+	{
+		key_str += item + ",";
+	}
+}
+if(key_str.length() > 0)
+{
+key_str = key_str.substring(0, key_str.length()-1);
+}
+
+if(keyword == null) keyword = new String[] {key_str};
+if(keyword!=null) System.out.println(keyword.length); */
+// 여기까지
+int perPage = 5;  //  페이지당 게시물 갯수
+int curpage = 1;  // 현재 페이지
+try
+{
+	curpage = Integer.parseInt(pageno);
+}catch(Exception e){}
+
+// 게시물 정보를 srvo객체에 담아 조회한다
+boardDTO bdto = new boardDTO();
+searchVO srvo = new searchVO();
+if(season!=null)srvo.setSeason(season);
+if(local!=null)srvo.setLocal(local);
+if(human!=null)srvo.setHuman(human);
+if(move!=null)srvo.setMove(move);
+if(schedule!=null)srvo.setSchedule(schedule);
+if(uinout!=null)srvo.setUinout(uinout);
+ArrayList<boardVO> list = bdto.GetList(curpage, type, keyword, srvo, perPage);
+
+//전체 게시물 갯수를 조회한다.(total = 게시물 갯수)
+int total = bdto.GetTotal(type, keyword, srvo);
+
+//최대 페이지 번호를 계산한다.
+int maxpage = total / perPage;	//(maxpage = 최대 페이지)
+if( total % perPage != 0) maxpage++; 
+// (seqNo = 게시판 번호) 게시판 번호 = 게시물 갯수 -((현재페이지-1)*페이지당 개시물 갯수) 
+int seqNo = total -((curpage-1)*perPage);
+
+//파라메터를 생성한다.
+String search_param = "";
+search_param += Param.getParam(season,"season");
+search_param += "&";
+search_param += Param.getParam(local,"local");
+search_param += "&";
+search_param += Param.getParam(human,"human");
+search_param += "&";
+search_param += Param.getParam(move,"move");
+search_param += "&";
+search_param += Param.getParam(schedule,"schedule");
+search_param += "&";
+search_param += Param.getParam(uinout,"uinout");
+
+String param = "";
+param += "type=" + type;
+param += "&";
+param += Param.getParam(keyword,"keyword");
+param += "&";
+param += "kind=" + kind;
+param += "&";
+param += search_param;
+%>    
+<link rel="stylesheet" type="text/css" href="../css/index(search_result).css">
+<script>
+$(document).ready(function()
+{
+	
+	$("#keyword").keyup(function(e){
+		if(e.which == 13)
+		{
+			DoSearch();	
+		}
+		
+	});
+	
+	// write_button(글쓰기 버튼) 클래스를 클릭시 write.jsp로 이동
+	$(".write_button").click(function(){
+		if(confirm("글쓰기 페이지로 이동하시겠습니까?") == true)
+		{
+			document.location = "../board/write.jsp";
+		}
+	});
+	
+	// keyword_button(키워드 선택) 클래스를 클릭시  main.jsp + 6종키워드 + 검색타입 + 검색어
+	$(".keyword_button")
+	.click(function()
+	{
+		if(confirm("키워드선택 페이지로 이동하시겠습니까?") == true)
+		{
+			document.location = "../firstmain/main.jsp?<%= search_param %>&type=" + $("#type").val() + "&keyword=" + $("#keyword").val();
+		}
+	});
+	
+	// index_btn(전체글 보기) 아이디를 클릭시 search.jsp + 6종키워드 + 검색타입 + 검색어
+	$("#index_btn")
+	.click(function()
+	{
+		document.location = "../board/index.jsp?<%= param %>";
+	});
+		
+	
+	
+	// view
+	<%-- $(".view")  
+	.click(function(){
+//		$(this).find()
+			document.location = "../board/view.jsp?type=<%= type %><%for(String item: keyword){%>&keyword=<%= item %><%}%>";
+	})
+	.mouseover(function(){
+		$(this).css("background-color", "#F0F1EC");
+	})
+	.mouseout(function()
+	{
+		$(this).css("background-color", "");
+	}) --%>
+});
+
+/* function ksubmit()
+{
+	$("#keyward").submit();
+}
+
+
+function btn()
+{
+	$("#keyward").submit();
+}
+ */
+
+
+$(function()// 첫번째 슬라이드	
+{
+	var firstSlide = 
+	$('.slider').find('li').first()			// slider 클래스를 찾아 li요소중 첫번째 li요소를 선택(첫번째 슬라이드만 선택)
+	.stop(true).animate({'opacity':1},200);	//  animate({'opacity':설정값},지연시간)/페이드인효과 서서히 나타남   *설정값 : 0 - 투명/ 1 - 불투명  *1초 = 1000밀리세컨드
+      
+	// 이전버튼 함수
+	function PrevSlide()
+	{ 
+	    stopSlide(); startSlide();		//타이머 초기화
+	    
+	    var lastSlide = $('.slider').find('li').last()	//마지막 슬라이드
+	    .prependTo( $('.slider'));						//마지막 슬라이드를 맨 앞으로 보내기	
+	     						  
+	    secondSlide =  $('.slider').find('li').eq(1)	//두 번째 슬라이드 구하기
+	    .stop(true).animate({'opacity':0},400); 		//밀려난 두 번째 슬라이드는 fadeOut 시키고
+	    
+	    firstSlide =  $('.slider').find('li').first() 	//맨 처음 슬라이드 다시 구하기
+	    .stop(true).animate({'opacity':1},400);			//새로 들어온 첫 번째 슬라이드는 fadeIn 시키기
+	 }
+	 
+	// 다음 버튼 함수	  
+  	function NextSlide()
+  	{ 
+   	 	stopSlide();startSlide();		//타이머 초기화
+   	 	
+    	firstSlide = $('.slider').find('li').first() 	// 첫 번째 슬라이드
+	    .appendTo($('.slider')); 					 	// 맨 마지막으로 보내기
+	    
+	    var lastSlide = $('.slider').find('li').last() 	// 맨 마지막으로 보낸 슬라이드
+	    .stop(true).animate({'opacity':0},400); 		// fadeOut시키기
+	    
+	    firstSlide = $('.slider').find('li').first()	// 맨 처음 슬라이드
+	    .stop(true).animate({'opacity':1},400);			// fadeIn 시키기
+ 	 }
+  
+    $('#next').on('click', function()
+	{ 
+		// 다음버튼 클릭
+    	NextSlide();
+    });
+  
+	 $('#prev').on('click', function()
+	 { 
+		// 이전 버튼 클릭
+	 	PrevSlide();
+	 });
+  
+	// 자동 슬라이드 시작
+	startSlide();
+	var theInterval;
+	
+	//자동 슬라이드 설정
+	function startSlide()
+	{
+		theInterval = setInterval(NextSlide, 5000); 
+	}
+	
+	//자동 멈추기
+	function stopSlide() 
+	{ 
+		clearInterval(theInterval);
+	}
+	  
+	//마우스 오버시 슬라이드 멈춤
+	$('.slider').hover(function()
+	{ 
+		stopSlide();
+	}, 
+	function()
+	{
+		startSlide();
+	});
+	
+	// 슬라이드에서 얻은 게시물번호로 링크
+	$('.slider > #divSlide').on('click', function()
+	{ 
+		firstSlide = $('.slider').find('li').first();
+		//alert($(firstSlide).attr("no"));
+		
+		bno = $(firstSlide).attr("no");
+		document.location = "view.jsp?<%= param %>&no=" + bno;
+	});	
+
+});
+ 
+function view(a)
+{
+	document.location = 'view.jsp?' + a;
+} 
+
+// 검색 네비게이션
+function DoSearch()
+{
+	document.location = "search.jsp?<%= search_param %>&type=" + $("#type").val() + "&keyword=" + $("#keyword").val();
+}
+
+</script>
+		
+	</head>
+	<body>
+		<table border="0" style="width: 90%;" align="center">
+			<tr align="center">
+				<td>
+					<section style="height: 450px;">
+						<ul class="slider">
+							<%  // 슬라이드 타이틀 좌우로 보일수 있도록  
+							int count = 0;
+							for(boardVO vo : list)
+							{								
+								if(count%2 == 1)
+								{	
+									%>
+									<li id="divSlide" no="<%= vo.getBno() %>">
+										<div style="background-image: url(../upload/<%= vo.getFname() %>);  background-position: 0px -250px; cursor: pointer;">                                                                           
+											<dl>
+												<dt><%= vo.getBtitle() %></dt>
+												<dd></dd>
+											</dl>
+										</div>
+									</li>	
+									<%
+								}else{
+									%>
+									<li id="divSlide" no="<%= vo.getBno() %>">
+										<div style="background-image: url(../upload/<%= vo.getFname() %>); background-position: 0px -250px; cursor: pointer;">  
+											<dl class="right">
+												<dt><%= vo.getBtitle() %></dt>
+												<dd></dd>
+											</dl>
+										</div>
+									</li>	
+									<%
+								}
+								count++;
+							}
+							%>
+						</ul>
+						<div class="btn" style="padding-top: 470px;">
+							<button type="button" id="prev" style="width: 35px;"><</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<button type="button" id="next" style="width: 35px;">></button>
+						</div>
+					</section>
+				</td>					
+			</tr>
+		</table>
+		<table border="0" style="width: 90%; margin-top: 100px;" align="center">
+		<tr>
+			<td style="text-align: left; width: 550px; font-size : 20px; font-weight : 500; "><b>키워드</b> &nbsp;&nbsp; : 
+				<%= Param.setItem(season,"hotpink") %>   <!-- 배열로 넘어오는 season을 param클래스를 활용하여 향상된 for문에 color를 대입하여 값 출력 -->
+				<%= Param.setItem(local,"saddlebrown") %>
+				<%= Param.setItem(human,"orangered") %>
+				<%= Param.setItem(move,"royalblue") %>
+				<%= Param.setItem(schedule,"darkmagenta") %>
+				<%= Param.setItem(uinout,"#FFBF00") %>
+				<br>
+				검색결과 : <%= total %>개
+			</td>
+			<td>			
+				<select id="type" name="type" style="width: 120px; height: 35px; font-size: 20px; font-align=center; margin-right : 20px;">
+					<option value="T" <%= type.equals("T") ? "selected" : "" %>>제목</option>
+					<option value="N" <%= type.equals("N") ? "selected" : "" %>>내용</option>
+					<option value="U"  <%= type.equals("U")  ? "selected" : "" %>>닉네임</option>
+					<option value="" <%= type.equals("") ? "selected" : "" %>>제목+내용</option>
+				</select>
+				<%  // 검색된 
+				String searchKeys = "";
+				for(String key : keyword)
+				{
+					System.out.println("key : " + key);
+					System.out.println("length : " + key.length());
+					if(key.length() > 0 ){searchKeys += (key + " ");}
+					
+				}
+				System.out.println("searchKeys : " + searchKeys);
+				System.out.println("length : " + searchKeys.length());
+				%>
+				<input id="keyword" name="keyword" type="text" style="font-size: 20px; height: 33px;" placeholder="검색어를 입력해주세요." value="<%= searchKeys %>">
+				<input type="button" onclick="DoSearch();" id = "keyward"  value="검색하기" class="search_button" >&nbsp;&nbsp;&nbsp;&nbsp;
+			</td>
+			<td style="text-align: right;">
+				<button type="button" class="keyword_button">키워드 재선택</button>
+			</td>
+			<td style="text-align: right;">
+				<button type="button" class="write_button">글쓰기</button>
+			</td>
+		</tr>
+	</table>
+	<hr style="margin-top : 20px; margin-bottom : 20px;">
+	<div style="text-align: right; padding-right: 100px; padding-bottom: 10px; border-color : white;">
+		<button type="button" id="index_btn">전체글 보기</button>
+	</div>
+	<table border="1" style="width: 90%; font-size: 18px;" align="center">
+		<tr style="background-color: lightgray;">
+			<td style="width: 50px;">번호</td>
+			<td style="width: 150px;">키워드</td>
+			<td style="width: 300px;">제목</td>
+			<td style="width: 80px;">닉네임</td>
+			<td style="width: 80px;">작성일</td>
+			<td style="width: 50px;">조회수</td>
+			<td style="width: 50px;">추천수</td>
+		</tr>
+		
+		<% 
+		
+		for(boardVO vo : list)
+		{
+			String link_str = "";
+			link_str = "type="+ type;
+			for(String item: keyword)
+			{
+				link_str += "&keyword="+ item;
+			}
+			
+			if(vo.getSeason() == null && vo.getSeason().equals(""))
+			{
+				link_str += "&season=" + vo.getSeason();
+			}
+			if(vo.getLocal() == null && vo.getLocal().equals(""))
+			{
+				link_str += "&local=" + vo.getLocal();
+			}
+			if(vo.getSeason() == null && vo.getHuman().equals(""))
+			{
+				link_str += "&human=" + vo.getHuman();
+			}
+			if(vo.getMove() == null && vo.getMove().equals(""))
+			{
+				link_str += "&move=" + vo.getMove();
+			}
+			if(vo.getSchedule() == null && vo.getSchedule().equals(""))
+			{
+				link_str += "&schedule=" + vo.getSchedule();
+			}
+			if(vo.getUinout() == null && vo.getUinout().equals(""))
+			{
+				link_str += "&uinout=" + vo.getUinout();
+			}
+			link_str += "&page=" + curpage + "&no=" + vo.getBno() + "&kind=" + kind;
+			%>
+			<tr onclick="view('<%= link_str %>');" style="cursor: pointer;">
+				<td><%= seqNo-- %></td>
+				<td>
+					<span style="width: 130px;">
+						<span style="color: hotpink; font-size: 13px; width: 20px;">
+							<%=(!vo.getSeason().equals("null"))?vo.getSeason():"" %>
+						</span>&nbsp;
+						<span style="color: saddlebrown; font-size: 13px; width: 30px;">
+							<%=(!vo.getLocal().equals("null"))?vo.getLocal():"" %>
+						</span>&nbsp;
+						<span style="color: orangered; font-size: 13px; width: 20px;">
+							<%=(!vo.getHuman().equals("null"))?vo.getHuman():"" %>
+						</span>&nbsp;
+						<span style="color: royalblue; font-size: 13px; width: 20px;">
+							<%=(!vo.getMove().equals("null"))?vo.getMove():"" %>
+						</span>&nbsp;
+						<span style="color: darkmagenta; font-size: 13px; width: 20px;">
+							<%=(!vo.getSchedule().equals("null"))?vo.getSchedule():"" %>
+						</span>&nbsp;
+						<span style="color: #FFBF00; font-size: 13px; text-shadow: 0.5px -1px 0.5px black; width: 20px;">
+							<%=(!vo.getUinout().equals("null"))?vo.getUinout():"" %>
+						</span>
+					</span>
+				</td>
+				<td>
+				<!--  <a href="./view.jsp?<%= param %>&no=<%= vo.getBno() %>"> -->
+				<%=vo.getBtitle() %> 
+				<!--  </a>-->
+				</td>
+				<td><%=vo.getUnick() %></td>
+				<td><%=vo.getBwdate() %></td>
+				<td><%=vo.getBhit() %></td>
+				<td><%=vo.getBlike() %></td>
+			</tr>
+			<%
+		}
+		%>
+	</table>	
+		<table border="0" style="width: 70%;" align="center">
+		<tr style="font-size: 25px;">
+			<td>
+			<%
+			//페이징 시작블럭번호와 끝블럭 번호를 계산한다
+			int startBlock = ( (curpage - 1)  / 10) * 10 + 1;
+			int endBlock   = startBlock + 10 - 1; 
+			
+			//endBlock 이 최대 페이지 번호보다 크면 안됨.
+			if( endBlock > maxpage)
+			{
+				//예: maxpage가 22인데, endBlock이 30이면 endBlock을 22로 변경
+				endBlock = maxpage;
+			}	
+
+			//이전 페이지 블럭을 표시한다.
+			if(startBlock != 1)
+			{
+				%><a href="search.jsp?<%= param %>&page=<%= startBlock - 1 %>">◀</a>&nbsp;<%
+			}	
+			
+			//화면에 블럭 페이징을 표시한다.
+			for(int pno = startBlock ; pno <= endBlock; pno++)
+			{
+				if( curpage == pno)
+				{
+					//현재 페이지 이면....
+					%><a href="search.jsp?<%= param %>&page=<%= pno %>"><b style="color:red;"><%= pno %></b></a>&nbsp;<%
+				}else
+				{
+					%><a href="search.jsp?<%= param %>&page=<%= pno %>"><%= pno %></a>&nbsp;<%	
+				}
+			}
+			
+			//다음 페이지 블럭을 표시한다.
+			if(endBlock < maxpage)
+			{
+				%><a href="search.jsp?<%= param %>&page=<%= endBlock + 1 %>">▶</a>&nbsp;<%
+			}
+			%>
+			</td>
+		</tr>
+	</table>
+	</body>
+</html>

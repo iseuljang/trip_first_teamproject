@@ -1,0 +1,97 @@
+@charset "utf-8";
+
+/* #log_info 맨위 오른쪽 부분
+{
+	position: relative;
+	display: none;
+	top: -35px;
+	left: 1635px;
+	z-index: 1;
+}
+#log_table 맨위 오른쪽 부분 숨겨진 기능부분
+{	
+	border-collapse : collapse;
+	border-top: none;
+	border-bottom: none;
+}
+.log_td 맨위 오른쪽 부분 숨겨진 기능부분
+{
+	text-align: center;
+	width: 200px;
+	height: 50px;
+} */
+.tbtn /* 맨위 오른쪽 부분 숨겨진 기능부분*/
+{
+	border: 1px solid #d9d9d9;
+   	cursor:pointer; cursor:hand;
+  	background-color: #d9d9d9;
+  	color: black;
+  	padding: 5px;
+  	border-radius: 2em;
+  	width: 150px;
+  	height: 3em;
+	line-height: 3em;
+	text-align:center;
+	vertical-align:center;
+	font-size: 20px;
+}
+#td1 /* 좌측 카테고리 구간입니다 */
+{
+	text-align: center; 
+	font-size: 50px; 
+	margin: 200px 0px 30px 0px;
+}
+#td2 /* 공지사항 글목록입니다 */
+{
+	padding: 50px;
+}
+#tr_top /* 공지사항 글목록헤더 입니다 */
+{
+	border-top: 2px solid gray;
+	background-color: lightgray;
+}
+#tr_bottom /* 공지사항 글목록바텀 입니다 */
+{
+	border-bottom: 2px solid gray;
+}
+#sign /* 등록버튼입니다 */
+{
+	width: 100px;
+	height: 50px;
+	background-color: skyblue; 
+	color: white; 
+	border: 0px; 
+	border-radius: 0.2em;
+	font-size: 25px;
+	cursor: pointer;
+}
+#sign1 /* 삭제버튼입니다 */
+{
+	width: 100px;
+	height: 50px;
+	background-color: skyblue; 
+	color: white; 
+	border: 0px; 
+	font-size: 25px;
+	border-radius: 0.2em;
+	margin:0px 20px 20px 0px;
+	cursor: pointer;
+}
+
+.tr /* 공지사항 글목록 입니다 */
+{
+	border-bottom: 1px solid lightgray;
+ 	text-align: center;
+ 	font-size: 25px;
+}
+hr /* 상단 경계선입니다 */
+{
+	border:2px solid lightgray;
+}
+a /* 앵커태그 구간입니다 */
+{
+	color: black;
+	text-decoration-line: none;
+}
+
+	

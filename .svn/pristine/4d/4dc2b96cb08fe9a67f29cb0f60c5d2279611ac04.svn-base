@@ -1,0 +1,53 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%@ page import="trip.vo.*" %>
+<%@ page import="trip.dao.*" %>    
+<%@ page import="trip.dto.*" %>    
+<%@ page import="java.io.*" %>
+<%@ page import="java.util.*" %>  
+<%
+request.setCharacterEncoding("UTF-8");
+//로그인 여부를 세션을 통해 검사한다
+userVO login  = (userVO)session.getAttribute("login");
+
+//장근민======================================
+String msg = request.getParameter("msg");
+if(msg == null) msg = "";
+
+chatVO  cvo  = new chatVO();
+cvo.setCnote(msg);
+cvo.setUno(login.getUno());
+cvo.setCnote(msg);
+cvo.setUnick(login.getUnick());
+
+chatDTO cdto = new chatDTO();
+boolean ok = cdto.Insert(cvo);
+
+cdto.DBOpen();
+String sql = "";
+sql += "select * from chat where uno = " + login.getUno() + " order by cno desc";
+cdto.OpenQuery(sql);
+if(cdto.GetNext() == true)
+{
+	cvo.setCno(cdto.GetValue("cno"));
+	cvo.setCnote(cdto.GetValue("cnote"));
+	cvo.setCwdate(cdto.GetValue("cwdate"));
+	cvo.setUno(cdto.GetValue("uno"));
+	cvo.setUnick(cdto.GetValue("unick"));
+}
+
+if(ok == true)
+{
+	out.print("<div>" + cvo.getUnick() + " : " + cvo.getCnote() + "[" + cvo.getCwdate() + "]" + "</div>");
+}else
+{
+	out.print("메세지 저장 실패");
+}
+//장근민======================================
+/* String msg = request.getParameter("msg");
+if(msg == null) return ;
+
+chatVO cvo = new chatVO();
+chatDTO cdto = new chatDTO();
+cdto.Insert(cvo); */
+%>

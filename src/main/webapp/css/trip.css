@@ -1,0 +1,586 @@
+@charset "UTF-8";
+#toTop
+{
+	position: fixed; 	/* 포지션 고정 */
+	bottom: 100px; 		/* 밑에서 100px */
+	display: none; 		/* 보여지지 없음 - 기본적으로 안보여지게 */
+	z-index: 9999; 		/* 포지션을 먼저 지정후 z-좌표(레이어) : 9999입니다. */
+}
+
+#toDown
+{
+	position: fixed; 	/* 포지션 고정 */
+	top: 190px; 		/* 밑에서 100px */
+	display: none; 		/* 보여지지 없음 - 기본적으로 안보여지게 */
+	z-index: 9999; 		/* 포지션을 먼저 지정후 z-좌표(레이어) : 9999입니다. */
+}
+
+.lbtn
+{
+	width:450px;
+	height:60px;
+	background-color: #3598db;
+	color:white;
+	font-size:20px;
+	margin:5px;
+	border:0;
+	cursor:pointer; cursor:hand;
+	border-radius: 5px;
+	align:center;
+}
+.jbtn
+{
+	width:200px;
+	height:50px;
+	background-color: #3598db;
+	color:white;
+	font-size:20px;
+	margin:5px;
+	border:0;
+	cursor:pointer; cursor:hand;
+	border-radius: 5px;
+	align:center;
+	
+}
+.rbtn
+{
+	width:200px;
+	height:55px;
+	background-color: #3598db;
+	color:white;
+	font-size:20px;
+	margin:5px;
+	border:0;
+	cursor:pointer; cursor:hand;
+	border-radius: 5px;
+	
+}
+.bbtn
+{
+	width:450px;
+	height:60px;
+	background-color: rightgray;
+	color:black;
+	font-size:20px;
+	margin:5px;
+	border:0;
+	cursor:pointer; cursor:hand;
+}
+
+#retire
+{
+	cursor:pointer; cursor:hand;
+}
+
+.whitebtn
+{
+	width:135px;
+	height:45px;
+	background-color: white;
+	color:black;
+	font-size:15px;
+	margin:5px;
+	border:1px solid LightGray;
+	border-radius: 5px;
+	cursor:pointer; cursor:hand;
+}
+
+#bookpage
+{
+	width:135px;
+	height:45px;
+	display: flex;
+    justify-content: center;
+	font-size:30px;
+	background-color: white;
+	font-size:15px;
+	margin:5px;
+	border:1px solid LightGray;
+	border-radius: 5px;
+	cursor:pointer; cursor:hand;
+}
+
+#bookreply
+{
+	width:135px;
+	height:45px;
+	display: flex;
+    justify-content: center;
+	font-size:30px;
+	background-color: white;
+	font-size:15px;
+	margin:5px;
+	border:1px solid LightGray;
+	border-radius: 5px;
+	cursor:pointer; cursor:hand;
+}
+
+#bookwrite
+{
+	width:135px;
+	height:45px;
+	display: flex;
+    justify-content: center;
+	font-size:30px;
+	background-color: white;
+	font-size:15px;
+	margin:5px;
+	border:1px solid LightGray;
+	border-radius: 5px;
+	cursor:pointer; cursor:hand;
+}
+
+.jcheck
+{
+	border:1px solid LightGray;
+	border-radius: 5px;
+	vertical-align:middle;
+}
+
+#uid
+{
+	 height: 3em;
+	 line-height: 3em;
+	 margin:5px;
+}
+#upw
+{
+	height: 3em;
+	line-height: 3em;
+	margin:5px;
+}
+
+#pwcheck
+{
+	height: 3em;
+	line-height: 3em;
+	margin:5px;
+}
+#uname
+{
+	height: 3em;
+	line-height: 3em;
+	margin:5px;
+}
+#email
+{
+	height: 3em;
+	line-height: 3em;
+	margin:5px;
+}
+#dot
+{
+	height: 3em;
+	line-height: 3em;
+	margin:5px;
+}
+#local
+{
+	height: 3em;
+	line-height: 3em;
+	margin:5px;
+	border-radius: 5px;
+}
+#human
+{
+	height: 3em;
+	line-height: 3em;
+	margin:5px;
+	border-radius: 5px;
+}
+
+#sleep
+{
+	height: 3em;
+	line-height: 3em;
+	margin:5px;
+	border-radius: 5px;
+}
+
+#season
+{
+	height: 3em;
+	line-height: 3em;
+	margin:5px;
+	border-radius: 5px;
+}
+
+#move
+{
+	height: 3em;
+	line-height: 3em;
+	margin:5px;
+	border-radius: 5px;
+}
+#schedule
+{
+	height: 3em;
+	line-height: 3em;
+	margin:5px;
+	border-radius: 5px;
+}
+#uinout
+{
+	height: 3em;
+	line-height: 3em;
+	margin:5px;
+	border-radius: 5px;
+}
+
+#emailcheck
+{
+	height: 3em;
+	line-height: 3em;
+	margin:5px;
+}
+#sign
+{
+	height: 3em;
+	line-height: 3em;
+	margin:5px;
+	border:1px solid LightGray;
+	border-radius: 5px;
+	width:200px;
+}
+
+.img
+{
+	margin:0px;
+	padding:0px;
+	cursor:pointer; cursor:hand;
+}
+.tbtn
+{
+	border: 1px solid #d9d9d9;
+   	cursor:pointer; cursor:hand;
+  	background-color: #d9d9d9;
+  	color: black;
+  	padding: 0px;
+  	border-radius: 2em;
+  	width: 150px;
+  	height: 3em;
+	line-height: 3em;
+	text-align:center;
+	vertical-align:center;
+	font-size: 20px;
+}
+
+.rwhite
+{
+	width:100px;
+	height:50px;
+	background-color: white;
+	color:black;
+	font-size:20px;
+	margin:5px;
+	border:0;
+	cursor:pointer; cursor:hand;
+	border-radius: 5px;
+	position: relative;
+	left:190px;
+}
+.wwhite
+{
+	width:100px;
+	height:50px;
+	background-color: white;
+	color:black;
+	font-size:20px;
+	margin:5px;
+	border:0;
+	cursor:pointer; cursor:hand;
+	border-radius: 5px;
+	position: relative;
+	left:200px;
+}
+
+.mbtn
+{
+	width:200px;
+	height:50px;
+	background-color: #3598db;
+	color:white;
+	font-size:20px;
+	margin:5px;
+	border:0;
+	cursor:pointer; cursor:hand;
+}
+.resetbtn
+{
+	width:200px;
+	height:50px;
+	background-color: #3598db;
+	color:white;
+	font-size:20px;
+	margin:5px;
+	border:0;
+	cursor:pointer; cursor:hand;
+}
+
+textarea
+{
+	font-size: 20px;
+	text-align:left;
+}
+
+.sbtn
+{
+	width:100px;
+	height:70px;
+	background-color: #3598db;
+	color:white;
+	font-size:30px;
+	margin:5px;
+	border:0;
+	border-radius:5px;
+	vertical-align:center;
+	cursor:pointer; cursor:hand;
+}
+.srbtn
+{
+	width:100px;
+	height:70px;
+	background-color: #3598db;
+	color:white;
+	font-size:30px;
+	margin:5px;
+	border:0;
+	border-radius:5px;
+	vertical-align:center;
+	cursor:pointer; cursor:hand;
+}
+
+.ibtn
+{
+	cursor:pointer; cursor:hand;
+}
+
+.mdiv
+{
+	background-color:#d9d9d9;
+	border-radius:5px;
+	text-align:center;
+	height:2em;
+	line-height: 2em;
+}
+
+.line
+{
+  border : 1px solid gray;
+  border-collapse : collapse;
+  margin: 8px;
+}
+
+.filebox 
+{
+    display: inline-block;
+    height: 40px;
+    padding: 0 10px;
+    vertical-align: middle;
+    border: 1px solid #dddddd;
+    width: 200px;
+    color: #999999;
+    border:1px solid LightGray;
+	border-radius: 5px;
+	position: fixed;
+	left: 420px;
+	bottom: 400px;
+}
+
+.upload-name
+{
+    display: inline-block;
+    height: 40px;
+    padding: 0 10px;
+    vertical-align: middle;
+    border: 1px solid #dddddd;
+    width: 300px;
+    color: #999999;
+    border:1px solid LightGray;
+	border-radius: 5px;
+	position: fixed;
+	left: 600px;
+	bottom: 400px;
+}
+
+.fileboxlist .file-list
+{
+    display: inline-block;
+    height: 40px;
+    padding: 0 10px;
+    border: 1px solid #dddddd;
+    width: 80px;
+    color: #999999;
+    border:1px solid LightGray;
+	border-radius: 5px;
+	background-color: white;
+	vertical-align:center;
+}
+
+#namefile
+{
+	vertical-align:center;
+	vertical-align: middle;
+	margin:auto;
+	height:20px;
+	width:100px;
+	overflow:hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: inline-block;
+	padding: 10px 20px;
+    color: #999999;
+    border:1px solid LightGray;
+	border-radius: 5px;
+	background-color: white;
+}
+
+#fdbtn
+{
+	height:20px;
+	width:100px;
+	border-radius: 5px;
+	cursor:pointer; cursor:hand;
+}
+
+.filebox label {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    vertical-align: middle;
+    background-color: #999999;
+    cursor: pointer;
+    height: 25px;
+    margin-left: 10px;
+    border:1px solid LightGray;
+	border-radius: 5px;
+}
+
+.filebox input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+  	-webkit-apperance: none;
+}
+
+ #cart 
+{
+    /* 초기에는 보이지 않도록 설정 */
+    display: none;
+    width: 800px;
+    margin: auto;
+}
+
+#empty-cart 
+{
+    /* 초기에는 보이도록 설정 */
+    display: block;
+}
+
+section 
+{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    width: 100%;
+}
+
+ .menu_item 
+ {
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 20px;
+    width: 280px;
+    height: 160px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+ .menu_itemsub 
+ {
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 5px;
+    margin: 5px;
+    width: 130px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.menu_item
+{
+    transform: scale(1.1);
+}
+
+#log_info
+{
+	position: absolute;
+	display: none;
+	top: 92px;
+	left: 1405px;
+	z-index: 1;
+	background-color: lightgray;
+}
+
+#log_table
+{	
+	border-collapse : collapse;
+	border-top: none;
+	border-bottom: none;
+}
+
+.log_td
+{
+	text-align: center;
+	width: 200px;
+	height: 50px;
+	cursor:pointer; cursor:hand;
+}
+
+.btnbox
+{
+	width:300px;
+	height: 3em;
+	line-height: 3em;
+	cursor:pointer; cursor:hand;
+	text-align: center;
+	border-radius: 30px;
+	background-color:#d9d9d9;
+	vertical-align:middle;
+	font-size:40px;
+	margin:5px;
+	font-weight: bold;
+}
+
+#bookdel
+{
+	vertical-align:center;
+	vertical-align: middle;
+	margin:0;
+	height:20px;
+	width:30px;
+	white-space: nowrap;
+	display: inline-block;
+	padding: 0;
+    color: #999999;
+    border:1px solid LightGray;
+	border-radius: 5px;
+	background-color: white;
+	cursor:pointer; cursor:hand;
+}
+
+#icon_show
+{
+	width:1000px;
+	background-color: white;
+	display: none;
+	z-index: 1;
+	overflow: hidden; 
+	align:left;
+}

@@ -1,0 +1,70 @@
+@charset "utf-8";
+
+		
+		#td1 /* 좌측 카테고리입니다 */
+		{
+			text-align: center; 
+			font-size: 50px; 
+			margin: 200px 0px 30px 0px;
+		}
+		#td2 /* 닉네임 조회구간입니다 */
+		{
+			padding: 50px;
+		}
+		#href1 /* 앵커태그 구간입니다 */
+		{
+			color: rgb(26, 188, 156);
+		}
+		#check /* 조회하기 구간입니다 */
+		{
+			width: 70px;
+			height: 30px;
+			border: 0px;
+			background-color: lightgray;
+			border-radius:0.5em;
+			font-size: 25x; 
+		}
+		#nickname /* 조회하기 구간입니다 */
+		{
+			width: 180px;
+			height: 50px;
+			border: 0px;
+			font-size: 25px;
+			color: blue;
+			border-radius:0.5em;
+		}
+		#apply /* 입력구간입니다 */
+		{
+			background-color:lightgray; 
+			border-radius:0.5em; 
+			border: 0px;
+		}
+		#nick_w	/* 닉네임작성구간입니다 */
+		{
+			text-align:center; 
+			background-color:lightgray; 
+			border-radius:0.5em;
+			width:150px;
+		}
+		#apply
+		{
+			width: 70px;
+			height: 30px;
+		}
+		a /* 앵커태그 구간입니다 */
+		{
+			color: black;
+			text-decoration-line: none;
+		}
+		.td /* 닉네임 조회결과입니다 */
+		{
+			width: 150px;
+			font-size: 25px;
+			text-align: right;
+		}
+		hr /* 상단 경계선입니다 */
+		{
+			border:2px solid lightgray;
+			width:350px;
+		}
+	

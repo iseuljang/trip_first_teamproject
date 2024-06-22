@@ -1,0 +1,38 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="trip.mail.*" %>
+<%@ page import="trip.dto.*" %>
+<%
+request.setCharacterEncoding("UTF-8");
+
+String email = request.getParameter("email");
+String rearEmail = request.getParameter("rearEmail");
+if(email == null || rearEmail == null)
+{
+	out.print("올바른 메일주소가 아닙니다.");
+	return;
+}
+Sendmail sender = new Sendmail();
+
+//인증코드를 얻는다.
+String code = sender.AuthCode(6);
+
+sender.setFrom("gyr0204@naver.com");
+sender.setAccount("gyr0204", "zxcv1234!!");
+
+sender.setTo(email + "@" + rearEmail + ".com");
+if(rearEmail.equals("daum") || rearEmail.equals("hanmail"))
+{
+	sender.setFrom(email + "@" + rearEmail + ".net");
+	sender.setTo(email + "@" + rearEmail + ".net");
+}
+
+sender.setMail("비밀번호 찾기 인증코드입니다.", "인증코드 : " + code);
+if( sender.sendMail() == true )
+{
+	session.setAttribute("search_code", code);
+	out.println("메일을 발송하였습니다.");
+}else
+{
+	out.println("메일 발송에 실패하였습니다.");
+}
+%>

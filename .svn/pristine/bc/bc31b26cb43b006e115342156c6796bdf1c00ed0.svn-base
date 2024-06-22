@@ -1,0 +1,110 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.util.*" %> 
+<%@ page import="java.io.*" %> 
+<%@ page import="java.net.URLEncoder" %> 
+<%@ page import="com.oreilly.servlet.MultipartRequest" %> 
+<%@ page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy" %>      
+<%@ include file="../include/head.jsp" %> 
+<%
+//--------------------- dto, vo 설정 ------------------
+adminboardDTO dto = new adminboardDTO();
+adminboardVO  vo  = new adminboardVO();
+
+// ----------------- multiple로 받아오기 ----------------
+int size = 10 * 1024 * 1024; 
+MultipartRequest multi; 
+try{
+		multi =  
+			new MultipartRequest(
+					request,
+					uploadPath,
+					size, 
+					"utf-8",
+					new DefaultFileRenamePolicy()
+				);
+}catch(Exception e)
+{
+	%>
+	<script>
+	$(document).ready(function(){
+		
+		alert("공지 게시글 저장에 실패했습니다.");
+		history.back();
+		return;
+	});
+	</script>
+	<%
+	e.printStackTrace();
+	return;
+}
+
+String uno = multi.getParameter("uno");
+String adtitle = multi.getParameter("adtitle");
+String startday = multi.getParameter("startday");
+String endday = multi.getParameter("endday");
+
+if(uno == null || adtitle == null
+|| startday == null|| endday == null
+|| uno.equals("") || startday.equals("") 
+|| uno.equals("") || endday.equals("") )
+{
+	%>
+	<script>
+	$(document).ready(function(){
+		
+		alert("유효하지 않은 값입니다.");
+		history.back();
+		return;
+	});
+	</script>
+	<%
+}
+
+Enumeration files = multi.getFileNames();
+String fileid = (String) files.nextElement();
+String filename = (String) multi.getFilesystemName("fname");				
+
+String phyname = null;
+if(filename != null) 
+{
+	phyname = UUID.randomUUID().toString();  
+	String srcName    = uploadPath + "/" + filename;  
+	String targetName = uploadPath + "/" + phyname;   
+	File srcFile    = new File(srcName);
+	File targetFile = new File(targetName);
+	srcFile.renameTo(targetFile);
+}
+
+vo.setUno(uno);
+vo.setAdtitle(adtitle);
+vo.setEndday(endday);
+vo.setStartday(startday);
+vo.setFname(filename);
+vo.setPname(phyname);
+
+if(dto.Insert(vo) == false)
+{
+	%>
+	<script>
+	$(document).ready(function(){
+		
+		alert("유효하지 않은 값입니다.");
+		history.back();
+		return;
+	});
+	</script>
+	<%
+}else
+{
+	%>
+	<script>
+	$(document).ready(function(){
+		
+		alert("공지 게시물이 등록되었습니다.");
+		document.location = "masterGonggiwrite.jsp";
+	});
+	</script>
+	<%
+}
+%>

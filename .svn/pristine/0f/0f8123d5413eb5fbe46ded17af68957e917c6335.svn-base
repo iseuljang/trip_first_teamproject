@@ -1,0 +1,41 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="trip.dto.*" %>
+<%
+String idcheck = request.getParameter("idcheck");
+String upw = request.getParameter("upw");
+
+if(idcheck.equals("false"))
+{
+	out.println("99");
+	return;
+}
+
+if(upw == null)
+{
+	out.println("00");
+	return;
+}
+
+if(upw.equals(""))
+{
+	out.println("-1");
+	return;
+}
+
+//비밀번호 길이가 4자 미만일시
+if(upw.length() < 4)
+{
+	out.println("02");
+	return;
+}
+
+//비밀번호 길이가 20자 초과일시
+if(upw.length() > 20)
+{
+	out.println("03");
+	return;
+}
+
+out.println("01");
+%>

@@ -1,0 +1,25 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="trip.vo.*" %>
+<%@ page import="trip.dto.*" %> 
+<%
+request.setCharacterEncoding("UTF-8");
+
+String checkedValueTotal = request.getParameter("checkedValueTotal");
+String adnoList[] = checkedValueTotal.split(",");
+adminboardDTO dto = new adminboardDTO();
+for(String adno : adnoList)
+{
+	
+	if( dto.Delete(adno) == false )
+	{
+		out.println("0");
+	}else
+	{
+		out.println("1");
+	} 
+}
+
+
+
+%>

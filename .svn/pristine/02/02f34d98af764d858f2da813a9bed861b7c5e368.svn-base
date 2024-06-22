@@ -1,0 +1,95 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+   <%@ include file="../include/head.jsp" %>
+   <link rel="stylesheet" type="text/css" href="../css/pwsearch2.css">
+   
+<script>
+$(document).ready(function()
+{
+	$("#attach1-1").focus();
+	
+	$("#attach1-3").keyup(function(event){
+		if(event.keyCode == 13)
+		{
+			search();	
+		}
+	});
+	
+	$("#attach2").click(function(event){
+			search();	
+	});
+});	
+
+function search()
+{
+	if($("#attach1-1").val() == "")
+	{
+		alert("아이디를 입력하세요.");
+		$("#attach1-1").focus();
+		return false;
+	}	
+		
+	if($("#attach1-2").val() == "")
+	{
+		alert("이메일을 입력하세요.");
+		$("#attach1-2").focus();
+		return false;
+	}	
+		
+	if($("#attach1-3").val() == "")
+	{
+		alert("인증번호를 입력해주세요.");
+		$("#attach1").focus();
+		return false;
+	}
+	else
+	{
+		document.location = "pwsearch3.jsp";
+		return true;
+	}
+
+}
+
+
+</script>
+</head>
+<body>
+<div id= "memberchange" name = "memberchange">
+	<div class="intro_bg">
+		<div class="header"></div>
+	</div>
+</div>
+<div class="hline1"></div>		
+<div class="str">본인확인 이메일로 인증해주세요</div>
+<div class="str1">본인확인 이메일 주소와 입력한 이메일 주소가 같아야<br>
+인증번호를 받을 수 있습니다.</div>
+<table >
+	<tr>
+	<td class="attach">이 름</td>
+	<td><input type="text" id="attach1-1" class="attach1" placeholder="이름을 입력해주세요"></td>
+	<td><div class="certifi1"></div></td>
+	</tr>
+</table>
+<div style="margin-bottom:10px"></div>
+<table >
+	<tr>
+	<td class="attach">이메일</td>
+	<td><input type="text" id="attach1-2" class="attach1" placeholder="이메일을 입력해주세요"></td>
+	<td><div class="certifi">인증번호 받기</div></td>
+	</tr>
+</table>
+<div style="margin-bottom:10px"></div>
+<table>
+	<tr>
+	<td class="attach">인증</td>
+	<td><input type="text" id="attach1-3" class="attach1" placeholder="인증번호를 입력해주세요"></td>
+	<td><div class="certifi1"></div></td>
+	</tr>
+</table>
+<div style="margin-bottom:10px"></div>
+<div id="attach2" class="attach2">다 음</div>
+<p class="str1">이메일이 오지 않는다면? <br></p>
+	<p class="str2">여행추천가이드가 발송한 메일이 스팸 메일로 분류된 것은 아닌지 확인해 주세요<br>
+	스팸 메일함에도 메일이 없다면, 다시 한 번 '인증번호 받기'를 눌러주세요</p>
+</body>
+</html>

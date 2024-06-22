@@ -1,0 +1,15 @@
+<%@ page language="java" contentType="text/xml; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+ <%@ include file="../include/head.jsp" %>
+<chatmsg>
+<%
+String cno = request.getParameter("cno");
+if(cno == null) cno = "0";
+
+
+chatDTO cdto = new chatDTO();
+cdto.GetList(cno);
+
+
+%>
+</chatmsg>

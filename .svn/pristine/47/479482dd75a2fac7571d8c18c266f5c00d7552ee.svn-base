@@ -1,0 +1,213 @@
+@charset "utf-8";
+
+
+*{
+  font-family: 'Noto Sans KR', sans-serif;
+  list-style: none;
+  text-decoration: none;
+  border-collapse: collapse;
+  margin:auto;
+  padding:0px;
+  color: #000;
+  
+}
+
+
+.header1{
+	margin:20px 1200px 0px 0px;
+  background-image: url("../image/logo.jpg");
+  background-size: 100%;
+  width: 300px;
+  height: 60px;
+  display:block;
+}
+.login{
+	width:170px;
+	height:50px;
+	border-radius: 30px 30px 30px 30px;
+	background: #E6E6E6; 
+	color: black;
+	line-height: 50px;
+	cursor: pointer;
+	text-align: center;
+	margin:auto;
+	margin-left:0px;
+	font-size:25px;
+  	display:block;
+	}
+
+	
+.hline{
+  margin-top: 20px;	
+  width: 1800px;
+  height: 10px;
+  border-top: solid #E1E1E1;
+  display: block;
+}	
+
+
+
+
+.intro_bg{
+	 margin-left:200px;
+	 margin-top:0px;
+		
+}
+
+.main{
+	display:flex;
+	flex-direction: row;
+}
+.hline2{
+  width: 1200px;
+  height: 30px;
+  border-top: solid #E1E1E1;
+  margin: auto;
+  display: block;
+}
+
+
+.title12{
+	margin: 0px 0px 0px 60px;
+	color:black;
+	font-size: 60px;
+	font-weight: bold;
+	width: 140px;
+}
+
+
+
+.title1{
+	margin: 0px 0px 0px 0px;
+	border:none;
+	color:black;
+	font-size: 40px;
+	font-weight: bold;
+	width: 1000px;
+}
+.guide{
+	margin-left:470px;
+	margin-top: 0px;
+	font-size: 28px;
+	display:block;
+	
+}
+.attach{
+	width:160px;
+	height:70px;
+	border: 1px solid #CECECE;
+	border-radius: 10px 0px 0px 10px;
+	background: #EDEDED; 
+	color: black;
+	line-height: 70px;
+	margin:16px 0px 0px 500px;
+	text-align: center;
+	font-size: 30px;
+	display:inline-block;
+	
+}
+
+.attach1{
+	width:600px;
+	height:70px;
+	border: 1px solid #CECECE;
+	border-radius: 0px 10px 10px 0px;
+	background: white; 
+	color: black;
+	line-height: 70px;
+	margin:16px auto;
+	text-align: center;
+	font-size: 30px;
+	display:inline-block;	
+	margin-left:-4px;
+	overflow: hidden;
+	}
+.attach2{
+	width:120px;
+	height:40px;
+	border: 1px solid #CECECE;
+	border-radius: 10px 0px 0px 10px;
+	background: #EDEDED; 
+	color: black;
+	line-height: 40px;
+	margin:12px 0px 0px 500px;
+	text-align: center;
+	font-size: 22px;
+	display:inline-block;
+	
+}
+
+.attach2-1{
+	width:300px;
+	height:40px;
+	border: 1px solid #CECECE;
+	border-radius: 0px 10px 10px 0px;
+	background: white; 
+	color: black;
+	cursor: pointer;
+	text-align: center;
+	font-size: 20px;
+	margin-left:-4px;
+	}
+	
+.date /* 공지 시작일 ~ 종료일부분입니다  */
+		{
+			width:300px; 
+			height:80px;
+			font-size: 24px;
+			background-color:lightgray; 
+			border-radius: 0.5em; 
+			text-align:center;
+		}
+	
+.tail{
+	position : relative;
+	top: 400px;
+	height:90px;
+	width:1400px;
+	background:#CECECE;
+	
+	margin:auto;
+	}	
+	
+.blank{
+	width:1400px;
+	height:50px;
+	margin: auto;
+}
+	
+.cancel{
+	width:180px;
+	height:70px;
+	border: 1px solid #CECECE;
+	border-radius: 10px 10px 10px 10px;
+	background: white; 
+	color: black;
+	line-height: 70px;
+	cursor: pointer;
+	text-align: center;
+	font-size: 28px;
+	
+}	
+.submit{
+		
+	width:180px;
+	height:70px;
+	border: 1px solid #CECECE;
+	border-radius: 10px 10px 10px 10px;
+	background: white; 
+	color:black;
+	line-height: 70px;
+	cursor: pointer;
+	text-align: center;
+	font-size: 28px;
+}	
+	
+.blank1{
+	width:20px;
+	margin: auto;
+}	
+	
+	
+	
+	

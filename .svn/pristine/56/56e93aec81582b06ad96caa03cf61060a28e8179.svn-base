@@ -1,0 +1,56 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="trip.vo.*" %>    
+<%@ page import="trip.dto.*" %>
+<%
+String uid = request.getParameter("uid");
+String upw = request.getParameter("upw");
+if(uid == null || upw == null)
+{	//로그인 정보가 올바르게 전송되지 않음
+	out.println("ERROR");
+	return;
+}
+
+//회원 탈퇴 / 정지 체크
+userDTO dto = new userDTO();
+userVO vo = dto.CheckState(uid, upw);
+if(vo != null)
+{
+	if(vo.getUretire() != null && vo.getUretire().equals("Y"))
+	{
+		out.println("RETIRE");
+		System.out.println("RETIRE");
+		return;
+		
+	}else if(vo.getUstop() != null && vo.getUstop().equals("Y" ))
+	{
+		out.println("STOP");
+		System.out.println("STOP");
+		return;
+		
+	}
+}else
+{
+	out.println("ERROR");
+	System.out.println("ERROR");
+	return;
+	
+}
+
+// 로그인 체크
+vo = dto.Login(uid, upw);
+if(vo == null)
+{	//로그인 안됨
+	out.println("ERROR");
+	System.out.println("ERROR");
+	return;
+}else
+{	//로그인 됨
+	session.setAttribute("login", vo);
+	out.println("OK");
+	System.out.println("OK");
+	return;
+}
+
+
+%>

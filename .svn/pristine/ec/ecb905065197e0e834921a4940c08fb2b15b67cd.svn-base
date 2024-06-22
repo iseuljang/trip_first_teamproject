@@ -1,0 +1,91 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.util.*" %>
+<%@ page import="java.io.*" %>
+<%@ page import="java.net.URLEncoder" %>
+<%@ page import="com.oreilly.servlet.MultipartRequest" %>
+<%@ page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy" %>  
+<%@ include file="../include/head.jsp" %>   
+<%
+int size = 10 * 1024 * 1024;
+
+MultipartRequest multi; 
+
+try{ 
+ 		multi = new MultipartRequest(request,uploadPath,size,
+		"UTF-8",new DefaultFileRenamePolicy());
+	}catch(Exception e)
+	{
+	 	//response.sendRedirect("index.jsp");
+	 	e.printStackTrace();
+	 	return;
+	}
+
+String btitle   = multi.getParameter("btitle"); 	
+String season   = multi.getParameter("season"); 	
+String local    = multi.getParameter("local"); 	
+String human    = multi.getParameter("human"); 	
+String move     = multi.getParameter("move");	
+String schedule = multi.getParameter("schedule");
+String uinout   = multi.getParameter("uinout");
+String bnote    = multi.getParameter("bnote");
+
+// ------------------첨부파일 보류--------------------
+/* 
+//업로드된 파일명을 얻는다.
+Enumeration files = multi.getFileNames();
+String fileid = (String) files.nextElement();
+//파일 이름 얻는 부분.  filename 원래 파일 이름. "attach" :: upload.jsp input name=
+String filenamep[] = (String) multi.("fname");
+out.print("ID : " + fileid + "<br>");
+out.print("파일명 : " + filename + "<br>");
+
+//UUID : 임의의 문자열을 만듬.  phyname 임의의 문자열로 하드디스크에 저장되는 이름 
+String phyname = UUID.randomUUID().toString();
+String srcName    = uploadPath + "/" + filename;
+String targetName = uploadPath + "/" + phyname;
+File srcFile    = new File(srcName);
+File targetFile = new File(targetName);
+//renameTo :: filename을 phyname 으로 변경
+srcFile.renameTo(targetFile); 
+
+attachVO  avo  = new attachVO();
+attachDTO adto = new attachDTO();
+avo.setBno(bno);
+avo.setFname(fname);
+avo.setPname(pname);
+adto.Insert(bvo.getBno());
+*/
+
+//게시물 저장
+boardVO bvo = new boardVO();
+boardDTO bdto = new boardDTO();
+
+bvo.setUno(login.getUno());
+bvo.setBtitle(btitle);
+bvo.setSeason(season);
+bvo.setLocal(local);
+bvo.setHuman(human);
+bvo.setMove(move);
+bvo.setSchedule(schedule);
+bvo.setUinout(uinout);
+bvo.setBnote(bnote);
+
+bdto.Insert(bvo);
+
+
+//response.sendRedirect("../board/index.jsp");
+
+%>
+<script>
+$(document).ready(function(){
+
+	document.location = "../board/index.jsp";
+	alert("글등록이 완료되었습니다.");
+	
+});
+</script>
+
+
+
+

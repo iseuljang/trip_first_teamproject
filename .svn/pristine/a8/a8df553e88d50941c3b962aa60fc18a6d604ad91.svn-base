@@ -1,0 +1,35 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="trip.vo.*" %>
+<%@ page import="trip.dto.*" %> 
+<%
+
+String email = request.getParameter("email");
+String nickcheck = request.getParameter("nickcheck");
+
+if(nickcheck.equals("false") )
+{
+	out.println("99");
+	return;
+}
+
+if(email == null )
+{
+	out.println("00");
+	return;
+}
+
+if(email.equals("") )
+{
+	out.println("-1");
+	return;
+}
+
+userDTO dto = new userDTO();
+if(dto.CheckEmail(email) == true)
+{	
+	out.println("01");
+}else
+{	
+	out.println("02");
+}
+%>

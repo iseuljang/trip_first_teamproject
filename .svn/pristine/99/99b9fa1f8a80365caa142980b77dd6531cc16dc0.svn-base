@@ -1,0 +1,36 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="trip.dto.*" %>
+<%
+String userpw2 = request.getParameter("userpw2");
+String userpw = request.getParameter("userpw");
+String pwcheck = request.getParameter("pwcheck");
+
+if(pwcheck.equals("false"))
+{
+	out.println("99");
+	return;
+}
+
+if(userpw2 == null)
+{
+	out.println("00");
+	return;
+}
+
+if(userpw2.equals(""))
+{
+	out.println("-1");
+	return;
+}
+if(userpw2.equals(userpw))
+{
+	out.println("01");
+	return;
+}else
+{
+	out.println("02");
+	return;
+}
+
+%>

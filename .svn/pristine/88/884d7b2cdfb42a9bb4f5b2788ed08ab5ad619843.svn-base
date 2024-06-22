@@ -1,0 +1,216 @@
+package trip.dto;
+import trip.dao.*;
+import trip.vo.*;
+import java.util.*;
+import java.io.*;
+import java.text.*;
+
+public class adminboardDTO extends DBManager
+{
+	//게시물을 등록한다.
+	//리턴값 : true - 등록성공, false - 등록실패	
+	public boolean Insert(adminboardVO vo)
+	{
+		if( this.DBOpen() == false )
+		{
+			return false;
+		}
+		
+		//Board 테이블에 자료를 등록한다.
+		String sql = "";
+		sql  = "insert into adminboard ";
+		sql += "(uno,adtitle,startday,endday,fname,pname) ";
+		sql += "values ";
+		sql += " ( ";
+		sql += "'" + vo.getUno() + "',";
+		sql += "'" + this._R(vo.getAdtitle()).replace("<","&lt;").replace(">","&gt;").replace("\n","\n<br>") + "',";
+		sql += "'" + vo.getStartday()  + "',";
+		sql += "'" + vo.getEndday()  + "',";
+		sql += "'" + vo.getFname()  + "',";
+		sql += "'" + vo.getPname()  + "' ";
+		sql += " ) ";
+		this.RunSQL(sql);
+
+		//등록된 게시물의 번호를 얻는다.
+		sql = "select last_insert_id() as adno ";
+		this.OpenQuery(sql);
+		this.GetNext();
+		String adno = this.GetValue("adno");
+		vo.setAdno(adno);
+		
+		this.DBClose();
+		return true;
+	}
+		
+	//게시물을 삭제한다.
+	//리턴값 : true - 삭제성공, false - 삭제실패	
+	public boolean Delete(String adno)
+	{
+		if( this.DBOpen() == false )
+		{
+			return false;
+		}
+		
+		//게시물 삭제
+		String sql = "";
+		sql = "delete from adminboard where adno = " + adno;
+		this.RunSQL(sql);
+		
+		this.DBClose();
+		return true;		
+	}
+		
+	//게시물 정보를 변경한다.
+	//리턴값 : true - 변경성공, false - 변경실패	
+	public boolean Update(adminboardVO vo)
+	{
+		if( this.DBOpen() == false )
+		{
+			return false;
+		}
+		
+		//Board 테이블에 자료를 변경한다.
+		String sql = "";
+		sql  = "update adminboard ";
+		sql += "set ";
+		sql += "adtitle = '" + this._R(vo.getAdtitle()).replace("<","&lt;").replace(">","&gt;").replace("\n","\n<br>") + "', ";
+		sql += "startday = '" + vo.getStartday() + "', ";
+		sql += "endday = '" + vo.getEndday() + "', ";
+		sql += "fname = '" + vo.getFname() + "', ";
+		sql += "pname = '" + vo.getPname() + "' ";
+		sql += "where adno = '" + vo.getAdno() + "' ";
+		this.RunSQL(sql);
+		
+		this.DBClose();
+		return true;		
+	}
+		
+	//게시물 정보를 조회한다.
+	public adminboardVO Read(String adno)
+	{
+		if( this.DBOpen() == false )
+		{
+			return null;
+		}
+		
+		String sql = "";
+		//해당 게시물 번호에 대한 정보를 조회한다.
+		sql  = "select uno,adtitle,startday,endday,fname,pname, ";
+		sql += "(select unick from user where uno = adminboard.uno) as unick ";
+		sql += "from adminboard ";
+		sql += "where adno = " + adno;
+		this.OpenQuery(sql);
+		if(this.GetNext() == false)
+		{
+			//해당 게시물 없음.
+			this.DBClose();
+			return null;
+		}
+	
+		adminboardVO vo = new adminboardVO();
+		vo.setAdno(adno);
+		vo.setUno(this.GetValue("uno"));
+		vo.setAdtitle(this.GetValue("adtitle"));
+		vo.setStartday(this.GetValue("startday"));
+		vo.setEndday(this.GetValue("endday"));
+		vo.setFname(this.GetValue("fname"));
+		vo.setPname(this.GetValue("pname"));
+		vo.setUnick(this.GetValue("unick"));		
+		
+		this.DBClose();
+		return vo;
+	}
+	
+	//전체 게시물 갯수를 얻는다.
+	public int GetTotal()
+	{
+		int total = 0;
+		if( this.DBOpen() == false )
+		{
+			return total;
+		}
+		
+		//게시물의 갯수를 얻는다.
+		String sql = "";
+		sql  = "select count(*) as count "; 
+		sql += "from adminboard ";
+		this.OpenQuery(sql);
+		this.GetNext();
+		total = this.GetInt("count");
+		this.CloseQuery();
+		
+		this.DBClose();
+		return total;
+	}
+	
+	//게시물 목록을 조회한다. -- 관리자페이지 공지사항
+	public ArrayList<adminboardVO> GetList(int pageno)
+	{
+		ArrayList<adminboardVO> list = new ArrayList<adminboardVO>();
+		
+		if( this.DBOpen() == false )
+		{
+			return list;
+		}		
+		
+		//게시물 목록을 얻는다.
+		String sql = "";
+		sql  = "select adno,adtitle,date(startday) as startday,date(endday) as endday  ";
+		sql += "from adminboard ";
+		//최근 게시물로 정렬
+		sql += "order by adno desc ";
+		
+		//페이지당 10개씩 가져오도록 limit 를 처리한다.
+		int startno = 5 * (pageno - 1);
+		sql += "limit " + startno + ",5 ";
+		
+		this.OpenQuery(sql);		
+		while(this.GetNext())
+		{
+			adminboardVO vo = new adminboardVO();
+			
+			vo.setAdno(this.GetValue("adno"));
+			vo.setAdtitle(this.GetValue("adtitle"));
+			vo.setStartday(this.GetValue("startday"));
+			vo.setEndday(this.GetValue("endday"));
+			
+			list.add(vo);
+		}
+		
+		this.DBClose();
+		return list;
+	}
+	
+	//게시물 목록을 조회한다. -- 인덱스나 서치페이지에서 공지사항 출력할때
+	public ArrayList<adminboardVO> GetList(adminboardVO vo)
+	{
+		ArrayList<adminboardVO> list = new ArrayList<adminboardVO>();
+		
+		if( this.DBOpen() == false )
+		{
+			return list;
+		}	
+		
+		
+		String sql = "";
+		sql  = "select adno,adtitle,date(startday) as startday,date(endday) as endday  ";
+		sql += "from adminboard ";
+		sql += "where startday =< date(now()) and endday >= date(now())";
+		sql += "order by endday desc ";
+		
+		
+		this.OpenQuery(sql);		
+		while(this.GetNext())
+		{
+			vo.setAdno(this.GetValue("adno"));
+			vo.setAdtitle(this.GetValue("adtitle"));
+			vo.setStartday(this.GetValue("startday"));
+			vo.setEndday(this.GetValue("endday"));
+			
+			list.add(vo);
+		}
+		
+		this.DBClose();
+		return list;
+	}
+}

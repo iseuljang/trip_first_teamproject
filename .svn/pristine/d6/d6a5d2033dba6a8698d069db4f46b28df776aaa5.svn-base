@@ -1,0 +1,313 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="../include/head.jsp" %> 
+<script>
+var IsDuplicate = false;
+
+$(document).ready(function()
+{
+	$("#uid").focus();	
+	
+	$("#uid").keyup(function(){
+		IsDuplicate = false;
+		userid = $(this).val();
+		if(uid == "")
+		{
+			$("#btnmsg").html("아이디를 입력하세요.");
+			return;
+		}
+		$.ajax({
+			url : "idcheck.jsp?uid=" + userid,
+			type : "get",
+			dataType : "html",
+			success : function(result)
+			{
+				result = result.trim();
+				switch(result)
+				{
+				case "00" : 
+					$("#btnmsg").html("아이디 체크 오류입니다.");
+					$("#btnmsg").css("color","blue");
+					break;
+				case "01" : 
+					$("#btnmsg").html("중복된 아이디입니다.");
+					$("#btnmsg").css("color","red");
+					IsDuplicate = true;
+					break;
+				case "02" : 
+					$("#btnmsg").html("사용 가능한 아이디입니다.");
+					$("#btnmsg").css("color","green");
+					break;
+				}
+			}
+		});
+	});
+	
+	
+});
+
+//메일 발송
+function SendMail()
+{
+	var umail = $("#email").val();
+	if( umail.indexOf("@") <= 0 )
+	{
+		alert("올바른 메일주소가 아닙니다.");
+		$("#email").focus();
+		return;
+	}
+	$.ajax({
+		type : "get",
+		url: "sendmail.jsp?mail=" + umail,
+		dataType: "html",
+		success : function(result) 
+		{
+			result = result.trim();
+			alert(result);
+		}			
+	});		
+}
+
+//회원가입처리
+function DoJoin()
+{
+	if($("#uid").val() == "")
+	{
+		alert("아이디를 입력하세요.");
+		$("#uid").focus();
+		return;
+	}
+	if(IsDuplicate == true)
+	{
+		alert("중복된 아이디입니다. 새로운 아이디를 입력하세요.");
+		$("#uid").focus();
+		return;
+	}
+	
+	if($("#upw").val() == "")
+	{
+		alert("비밀번호를 입력하세요.");
+		$("#upw").focus();
+		return;
+	}
+	
+	if($("#upw").val() != $("#pwcheck").val())
+	{
+		alert("비밀번호가 일치하지 않습니다.");
+		$("#pwcheck").focus();
+		return;
+	}
+	
+	if($("#uname").val() == "")
+	{
+		alert("이름을 입력하세요.");
+		$("#uname").focus();
+		return;
+	}
+	
+	if($("#season").val() == "")
+	{
+		alert("계절을 선택하세요.");
+		$("#season").focus();
+		return;
+	}
+	
+	if($("#local").val() == "")
+	{
+		alert("지역을 선택하세요.");
+		$("#local").focus();
+		return;
+	}
+	
+	if($("#code").val() == "")
+	{
+		alert("메일인증코드를 입력하세요.");
+		$("#code").focus();
+		return;
+	}	
+	
+	
+	if($("#sign").val() == "")
+	{
+		alert("가입방지코드를 입력하세요.");
+		$("#sign").focus();
+		return;
+	}
+	
+	$.ajax({
+		type : "get",
+		url: "getcode.jsp",
+		dataType: "html",
+		success : function(result) 
+		{
+			result = result.trim();
+			if($("#code").val() == result)
+			{
+				$.ajax({
+					url : "getsign.jsp",
+					type : "get",
+					dataType : "html",
+					success : function(result)
+					{
+						result = result.trim();
+						if($("#sign").val() == result)
+						{
+							if(confirm("회원가입을 진행하시겠습니까?") == 1)
+							{
+								$("#join").submit();
+							}
+						}else
+						{
+							alert("가입방지코드가 일치하지 않습니다.");
+							$("#sign").focus();
+						}
+					}
+				});
+			}else
+			{
+				alert("인증코드가 일치하지 않습니다.");
+				$("#code").focus();
+			}
+		}			
+	});	
+	
+}
+
+
+function DoEmail()
+{
+	if($("#code").val() == "")
+	{
+		alert("인증코드를 입력하세요.");
+		$("#code").focus();
+		return;
+	}		
+	
+	$.ajax({
+		type : "get",
+		url: "getcode.jsp",
+		dataType: "html",
+		success : function(result) 
+		{
+			result = result.trim();
+			if($("#code").val() == result)
+			{
+				alert("인증완료되었습니다.");			
+			}else
+			{
+				alert("인증코드가 일치하지 않습니다.");
+				$("#code").focus();
+			}
+		}			
+	});		
+}
+
+
+</script>
+	<form method="post" action="joinok.jsp" id="join" name="join">
+		<table border="0" width="100%">
+			<tr>
+				<td colspan="4" align="center" style="font-size:60px; height:90px;" ><strong>회원가입</strong></td>
+			</tr>
+			<tr>
+				<td width="25%">
+				<td width="450px" align="left" style="vertical-align:top;">
+					<h2 style="margin: 0px 0px 0px 0px">아이디</h2>
+					<input type="text" id="uid" name="uid" placeholder="아이디를 입력하세요." style="width:80%; font-size:18px; "><br>
+					<span id="btnmsg" style="margin-top:0px; width: 70pt; height: 25pt; font-size:18px; font-weight:bold; margin-left:5px"></span><br>
+					<h2 style="margin: 15px 0px 0px 0px">비밀번호</h2>
+					<input type="password" placeholder="비밀번호를 입력하세요." id="upw" name="upw" style="width:80%; font-size:18px;"><br>
+					<h2 style="margin: 15px 0px 0px 0px">비밀번호 확인</h2>
+					<input type="password" name="pwcheck" id="pwcheck" style="width:80%; font-size:18px;"><br>
+					<h2 style="margin: 15px 0px 0px 0px">이름</h2>
+					<input type="text"  name="uname" id="uname"  style="width:80%; font-size:18px;"><br>
+					<h2 style="margin: 15px 0px 0px 0px">닉네임</h2>
+					<input type="text"  name="unick" id="unick"  style="width:80%; font-size:18px; height:60px;"><br>
+				</td>
+				<td style="vertical-align:top;" colspan="2">
+				<h2 style="margin: 0px 0px 15px 0px">추천목록(검색목록에서 추천항목을 소개해 드립니다. )</h2>
+					✔️<select id="season" name="season" style="width:200px; font-size:17px;">
+						<option value="">계절</option>
+						<option value="봄">봄</option>
+						<option value="여름">여름</option>
+						<option value="가을">가을</option>
+						<option value="겨울">겨울</option>
+					</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<select id="move" name="move" style="width:200px; font-size:17px;">
+						<option value="">이동</option>
+						<option value="버스">버스</option>
+						<option value="기차">기차</option>
+						<option value="자가용">자가용</option>
+						<option value="자전거">자전거</option>
+					</select>
+					<br>	
+					✔️<select id="local" name="local" style="width:200px; font-size:17px;">
+						<option value="">지역</option>
+						<option value="서울경기도">서울,경기도</option>
+						<option value="강원도">강원도</option>
+						<option value="충청도">충청도</option>
+						<option value="전북">전라북도</option>
+						<option value="전남">전라남도</option>
+						<option value="경북">경상북도</option>
+						<option value="경남">경상남도</option>
+						<option value="제주">제주도</option>
+					</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<select id="schedule" name="schedule" style="width:200px; font-size:17px;">
+						<option value="">일정</option>
+						<option value="당일">당일</option>
+						<option value="숙박">숙박</option>
+					</select>
+					<br>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<select id="human" name="human" style="width:200px; font-size:17px;">
+						<option value="">동행</option>
+						<option value="가족">가족</option>
+						<option value="연인">연인</option>
+						<option value="친구">친구</option>
+						<option value="반려견">반려견</option>
+					</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<select id="uinout" name="uinout" style="width:200px; font-size:17px;">
+						<option value="">장소</option>
+						<option value="실내">실내</option>
+						<option value="실외">실외</option>
+					</select>
+					<br>
+					<br>
+					<h2 style="margin: 15px 0px 0px 0px">이모티콘</h2>
+					<input type="radio" id="uicon" name="uicon" value="1" checked style="width:20px;height:20px;"><span style="font-size:50px">😄</span>&nbsp;
+					<input type="radio" id="uicon" name="uicon" value="2" style="width:20px;height:20px;"><span style="font-size:50px">😆</span>&nbsp;
+					<input type="radio" id="uicon" name="uicon" value="3" style="width:20px;height:20px;"><span style="font-size:50px">😅</span>&nbsp;
+					<input type="radio" id="uicon" name="uicon" value="4" style="width:20px;height:20px;"><span style="font-size:50px">😀</span>&nbsp;
+					<input type="radio" id="uicon" name="uicon" value="5" style="width:20px;height:20px;"><span style="font-size:50px">😨</span>
+					<br>
+					<input type="radio" id="uicon" name="uicon" value="6" style="width:20px;height:20px;"><span style="font-size:50px">👿</span>&nbsp;
+					<input type="radio" id="uicon" name="uicon" value="7" style="width:20px;height:20px;"><span style="font-size:50px">😝</span>&nbsp;
+					<input type="radio" id="uicon" name="uicon" value="8" style="width:20px;height:20px;"><span style="font-size:50px">😷</span>&nbsp;
+					<input type="radio" id="uicon" name="uicon" value="9" style="width:20px;height:20px;"><span style="font-size:50px">😴</span>&nbsp;
+					<input type="radio" id="uicon" name="uicon" value="10" style="width:20px;height:20px;"><span style="font-size:50px">😱</span>&nbsp;
+					<br>
+					<br>
+					<h2 style="margin: 15px 0px 15px 0px">가입방지코드</h2>
+					<img src="./img.jsp" width="180px" height="60px" class="jcheck">&nbsp;&nbsp;
+					<input type="text" id="sign" name="sign"><br>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<h2 style="margin: 15px 0px 0px 0px">e-mail</h2>
+					<input type="email" id="email" name="email" style="width:60%; font-size:17px;"> 
+					<input type="button" onclick="SendMail();" id="sendmail" name="sendmail" value="이메일 인증" style="width: 70pt; height: 33pt; font-size:14px; font-weight:bold">
+					<h2 style="margin: 15px 0px 0px 0px"><br>인증번호 확인</h2>
+					<input type="text" id="code" name="code" style="width:60%; font-size:17px; height:50px;">
+					<input type="button" onclick="DoEmail();" id="code" name="code" value="인증코드 확인" style="width: 70pt; height: 33pt; font-size:14px; font-weight:bold">
+				</td>
+				<td colspan="2">
+					<br><!-- 회원가입 완료버튼 -->
+					<input type="button" class="jbtn" onclick="DoJoin();" value="회원가입 완료" style="width:250pt; height:50pt; font-size:28px; margin-left:200px">
+				</td>
+			</tr>
+		</table>
+		</form>
+	</body>
+</html>

@@ -1,0 +1,57 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.util.*" %> <!-- 추가 -->
+<%@ page import="java.io.*" %> <!-- 추가 -->
+<%@ page import="java.net.URLEncoder" %> <!-- 추가 -->
+<%@ page import="com.oreilly.servlet.MultipartRequest" %> <!-- 추가 cos.jar 파일 사용 -->
+<%@ page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy" %>    <!-- 추가 cos.jar 파일 사용 -->    
+<%@ include file="../include/head.jsp" %> 
+<%
+/*
+int size = 10 * 1024 * 1024; // 저장 사이즈
+
+MultipartRequest multi; //cos.jar 들어있는 클래스
+try       
+{
+multi =  
+new MultipartRequest(request,muploadPath,size, 
+	"utf-8",new DefaultFileRenamePolicy());
+}catch(Exception e)
+{
+	response.sendRedirect("write.jsp");  
+	return;
+}
+
+String btitle = multi.getParameter("btitle");
+String bkind = multi.getParameter("bkind");
+String bnote = multi.getParameter("bnote");
+
+Enumeration files = multi.getFileNames();// 업로드된 파일
+String fileid = (String) files.nextElement();// 업로드된 파일 목록
+String filename = (String) multi.getFilesystemName("fname");// pc업로드에서된 파일 이름 과 서버에다운로드된 파일이름이 달라졌을때 다운로						
+
+String phyname = null;
+if(filename != null) 
+{
+	phyname = UUID.randomUUID().toString();  // 범용 고유 식별자(특별한 문자열/UUID)로 바꿈
+	String srcName    = uploadPath + "/" + filename;  // srcName = 업로드 경로 + / + 원본파일이름(a.jpg)
+	String targetName = uploadPath + "/" + phyname;   // targetName = 업로드 경로 + / + 바뀐 파일이름(fdfd232-2320fd)
+	File srcFile    = new File(srcName);
+	File targetFile = new File(targetName);
+	srcFile.renameTo(targetFile); //a.jpg -> fdfd232-2320fd(범용 고유식별자로 바꿈)
+}
+ 게시물을 저 장한다.
+adminboardVO avo = new adminboardVO();
+avo.setBtitle(btitle);
+bvo.setBkind(bkind);
+bvo.setBnote(bnote);
+avo.setUno(login.getUno());
+avo.setFname(filename);
+avo.setPname(phyname);
+
+BoardDTO bdto = new BoardDTO();
+bdto.Insert(bvo);
+ */
+response.sendRedirect("masterGonggiwrite");
+
+%>

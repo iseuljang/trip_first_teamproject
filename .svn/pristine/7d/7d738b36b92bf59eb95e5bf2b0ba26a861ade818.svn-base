@@ -1,0 +1,83 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="../include/head.jsp" %>
+<link rel="stylesheet" type="text/css" href="../css/pwsearchok.css"> 
+<%
+String upw  = request.getParameter("pw");
+String uname  = request.getParameter("name");
+String email  = request.getParameter("email");
+if( upw == null || upw.equals(""))
+{
+	response.sendRedirect("../idsearch/pwsearch2.jsp");
+	return;
+}
+userDTO udto = new userDTO();
+userVO uvo = udto.Search(uname, email);
+uvo.setUpw(upw);
+
+if( uvo.getUid() == null || uvo.getUid().equals(""))
+{
+	%>
+	<script>
+	$(document).ready(function(){
+		
+		alert("조회할 수 없는 계정입니다.");
+		document.location = "../idsearch/pwsearch3.jsp"
+		return;
+	});
+	</script>
+	<%
+	return;
+}
+udto.Change(uvo);
+
+if(upw != uvo.getUpw())
+{	
+	%>
+	<script>
+	$(document).ready(function(){
+		
+		alert("비밀번호 변경 오류입니다.");
+		document.location = "../idsearch/pwsearch3.jsp"
+		return;
+	});
+	</script>
+	<%
+	return;
+}
+%>
+	<script>
+		function gotoLogin()
+		{
+			document.location = "../user/login.jsp";
+		}
+	</script>
+	<body>
+		<table border="0" width="100%">
+			<tr>
+				<td colspan="5">
+				</td>
+			</tr>
+		</table>
+		<table border="0" align="center" style="width: 60%;">
+			<tr>
+				<td style="text-align: center;"><img src="../image/logo.jpg" width="60%" height="60%" class="img" style="margin:180px 0px 20px 0px"></td>
+			</tr>
+			<tr>
+				<td><hr></td>					
+			</tr>
+			<tr>
+				<td>
+					<h1>
+						<%= uvo.getUname() %>님 !
+						<span style="color: blue; font-size: 38px;">비밀번호가 정상적으로 변경되었습니다.</span>
+					</h1><br>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<button type="button" class="login_button" onclick="gotoLogin();">로&nbsp;&nbsp;그&nbsp;&nbsp;인</button>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

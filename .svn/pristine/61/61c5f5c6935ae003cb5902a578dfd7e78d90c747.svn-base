@@ -1,0 +1,174 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="../include/head.jsp" %>    
+<script src="../js/main.js"></script>
+	<table border="0" width="100%">
+		<tr>
+			<td width="15%" rowspan="5" class="ibtn" style="vertical-align:middle;">
+				<div>
+				<div id="idiv1" class="btnbox" style="background-color:#1abc9b; color:white;" onclick="tablechange('추천');">추천</div>
+				<div id="idiv2" class="btnbox" onclick="tablechange('계절');">계절</div>
+				<div id="idiv3" class="btnbox" onclick="tablechange('지역');">지역</div>
+				<div id="idiv4" class="btnbox" onclick="tablechange('동행');">동행</div>
+				<div id="idiv5" class="btnbox" onclick="tablechange('이동');">이동</div>
+				<div id="idiv6" class="btnbox" onclick="tablechange('일정');">일정</div>
+				<div id="idiv7" class="btnbox" onclick="tablechange('장소');">장소</div>
+				</div>
+			</td>
+			<td colspan="4" align="center" width="80%" height="120px">
+				<table class="line" width="1500px" height="200px">
+					<tr>
+						<td style="text-align:center;">
+							IMAGE NOT FOUND
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr height="300px" style="vertical-align:top;">
+			<td width="150px" align="center" height="100%" colspan="3" >
+				<section id="reco_show">
+					<div class="menu_item" onclick="addCart('봄');">
+						<img src="../image/spring.jpg" width="200px" height="130px">
+						<div class="mdiv">봄</div>
+					</div>
+					<div class="menu_item" onclick="addCart('전남');">
+						<img src="../image/전남.jpg" width="200px" height="130px">
+						<div class="mdiv">전라남도</div>
+					</div>
+					<div class="menu_item" onclick="addCart('연인');">
+						<img src="../image/lover.jpg" width="200px" height="130px">
+						<div class="mdiv">연인</div>
+					</div>
+				</section>
+				<section id="season_show">
+				<div class="menu_item" onclick="addCart('봄');">
+					<img src="../image/spring.jpg" width="200px" height="130px"><br>
+					<div class="mdiv">봄</div>
+				</div>
+				<div class="menu_item" onclick="addCart('여름');">
+					<img src="../image/summer.jpg" width="200px" height="130px"><br>
+					<div class="mdiv">여름</div>
+				</div>
+				<div class="menu_item" onclick="addCart('가을');">
+					<img src="../image/autumn.jpg" width="200px" height="130px"><br>
+					<div class="mdiv">가을</div>
+				</div>
+				<div class="menu_item" onclick="addCart('겨울');">
+					<img src="../image/winter.jpg" width="200px" height="130px"><br>
+					<div class="mdiv">겨울</div>
+				</div>
+			</section>
+			<section id="local_show">
+					<div class="menu_item" onclick="addCart('서울경기도');">
+						<img src="../image/경기.jpg" width="200px" height="130px">
+						<div class="mdiv">서울,경기도</div>
+					</div>
+					<div class="menu_item" onclick="addCart('강원도');">
+						<img src="../image/강원.jpg" width="200px" height="130px">
+						<div class="mdiv">강원도</div>
+					</div>
+					<div class="menu_item" onclick="addCart('충청도');">
+						<img src="../image/충청도.jpg" width="200px" height="130px">
+						<div class="mdiv">충청도</div>
+					</div>
+					<div class="menu_item" onclick="addCart('전북');">
+						<img src="../image/전북.jpg" width="200px" height="130px">
+						<div class="mdiv">전라북도</div>
+					</div>
+					<div class="menu_item" onclick="addCart('전남');">
+						<img src="../image/전남.jpg" width="200px" height="130px">
+						<div class="mdiv">전라남도</div>
+					</div>
+					<div class="menu_item" onclick="addCart('경북');">
+						<img src="../image/경북.jpg" width="200px" height="130px">
+						<div class="mdiv">경상북도</div>
+					</div>
+					<div class="menu_item" onclick="addCart('경남');">
+						<img src="../image/경남.jpg" width="200px" height="130px">
+						<div class="mdiv">경상남도</div>
+					</div>
+					<div class="menu_item" onclick="addCart('제주');">
+						<img src="../image/제주.jpg" width="200px" height="130px">
+						<div class="mdiv">제주도</div>
+					</div>
+				</section>
+				<section id="human_show">
+					<div class="menu_item" onclick="addCart('가족');">
+						<img src="../image/family.jpg" width="200px" height="130px">
+						<div class="mdiv">가족</div>
+					</div>
+					<div class="menu_item" onclick="addCart('연인');">	
+						<img src="../image/lover.jpg" width="200px" height="130px">
+						<div class="mdiv">연인</div>
+					</div>
+					<div class="menu_item" onclick="addCart('친구');">
+						<img src="../image/friend.jpg" width="200px" height="130px">
+						<div class="mdiv">친구</div>
+					</div>
+					<div class="menu_item" onclick="addCart('반려견');">
+						<img src="../image/dog.jpg" width="200px" height="130px">
+						<div class="mdiv">반려견</div>
+					</div>
+				</section>
+				<section id="move_show">
+					<div class="menu_item" onclick="addCart('버스');">
+						<img src="../image/bus.jpg" width="200px" height="130px">
+						<div class="mdiv">버스</div>
+					</div>
+					<div class="menu_item" onclick="addCart('기차');">
+						<img src="../image/train.jpg" width="200px" height="130px">
+						<div class="mdiv">기차</div>
+					</div>
+					<div class="menu_item" onclick="addCart('자가용');">
+						<img src="../image/car.jpg" width="200px" height="130px">
+						<div class="mdiv">자가용</div>
+					</div>
+					<div class="menu_item" onclick="addCart('자전거');">
+						<img src="../image/cycle.jpg" width="200px" height="130px">
+						<div class="mdiv">자전거</div>
+					</div>
+				</section>
+				<section id="schedule_show">
+				<div class="menu_item" onclick="addCart('당일');">
+					<img src="../image/당일치기.jpg" width="200px" height="130px">
+					<div class="mdiv">당일</div>
+				</div>
+				<div class="menu_item" onclick="addCart('숙박');">
+					<img src="../image/숙박.jpg" width="200px" height="130px">
+					<div class="mdiv">숙박</div>
+				</div>
+				</section>
+				<section id="inout_show">
+					<div class="menu_item" onclick="addCart('실내');">
+						<img src="../image/inside.jpg" width="200px" height="130px">
+						<div class="mdiv">실내</div>
+					</div>
+					<div class="menu_item" onclick="addCart('실외');">
+						<img src="../image/outside.jpg" width="200px" height="130px">
+						<div class="mdiv">실외</div>
+					</div>
+				</section>
+			</td>
+		</tr>
+		<tr height="130px">
+			<td colspan="4">
+			<form id="search" name="search" method="get" action="../board/search.jsp">
+				<table class="line" width="1500px" height="170px">
+					<tr>
+						<td>
+							<section class="sub_list">
+							</section>
+						</td>
+						<td align="right" style="vertical-align:center;">
+							<input type="submit" class="sbtn" value="검색">&nbsp;&nbsp;&nbsp;
+							&nbsp;&nbsp;&nbsp;
+						</td>
+					</tr>
+				</table>
+			</form>
+			</td>
+		</tr>
+	</table>
+	</body>
+</html>

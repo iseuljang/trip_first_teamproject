@@ -1,0 +1,274 @@
+package trip.dto;
+import trip.dao.*;
+import trip.vo.*;
+import trip.mail.*; 
+import java.io.*;
+import java.util.*;
+import java.text.*;
+
+// 회원정보 관리 클래스
+public class userDTO<SendMail> extends DBManager
+{
+	// 아이디 중복 검사 
+	// 리턴값 : true - 중복된 아이디, false - 중복이 안된 아이디
+	public boolean CheckID(String uid)
+	{	// 부모상속을 받은 경우라 super. / this. / 혹은 없이  DBOpen() 이렇게도 사용 가능
+		this.DBOpen();
+		String sql = "";
+		sql  = "select uid ";
+		sql += "from user ";
+		sql += "where uid = '" + uid + "' ";
+		this.OpenQuery(sql);
+		if(this.GetNext() == true)
+		{	//아이디가 있음
+			this.DBClose();
+			return true;
+		}
+		this.DBClose();
+		return false;
+	}
+	//아이디 중복 검사 오버로딩
+	public boolean CheckID(userVO vo)
+	{
+		return CheckID(vo.getUid());
+	}
+	
+	// 회원가입 처리 --return 값 :: true 등록성공   false 등록실패
+	public boolean Join(userVO vo)
+	{	//중복된 아이디 체크하기
+		if( CheckID(vo.getUid()) == true)
+		{	//아이디가 중복됨
+			return false;
+		}
+		
+		this.DBOpen();
+		String sql = "";
+		
+		sql = "insert into user ";
+		sql += "(uid,upw,uname,unick,email,uicon,season,local,human,move,schedule,uinout) ";
+		sql += "values ";
+		sql += " ( ";
+		sql += "'" + vo.getUid()     + "',";
+		sql += "md5('" + vo.getUpw() + "'),";
+		sql += "'" + vo.getUname()   + "',";
+		sql += "'" + vo.getUnick().replace("<","&lt;").replace(">","&gt;").replace("\n","\n<br>").replace("'", "''") + "',";
+		sql += "'" + vo.getEmail()  + "',";
+		sql += "'" + vo.getUicon()  + "',";
+		sql += "'" + vo.getSeason()  + "',";
+		sql += "'" + vo.getLocal()  + "',";
+		sql += "'" + vo.getHuman()  + "',";
+		sql += "'" + vo.getMove()  + "',";
+		sql += "'" + vo.getSchedule()  + "',";
+		sql += "'" + vo.getUinout()  + "'";
+		sql += " ) ";
+		this.RunSQL(sql);
+		
+		//등록된 회원 번호를 얻는다
+		sql = "select last_insert_id() as uno";
+		this.OpenQuery(sql);
+		this.GetNext();
+		vo.setUno(this.GetValue("uno"));
+		this.CloseQuery();
+		
+		this.DBClose();
+		return true;
+	}
+	
+	
+	// 회원 로그인 처리
+	public userVO Login(String uid, String upw)
+	{
+		this.DBOpen();
+		String sql = "";
+		sql  = "select ";
+		sql += "uno, uid, uname, unick, admin, uicon, email, season, local, human, move, schedule, uinout, ustop ";
+		sql += "from user ";
+		sql += "where uid = '" + uid + "' and upw = md5('" + upw + "') and uretire = 'N' and ustop = 'N' ";
+		this.OpenQuery(sql);
+		if(this.GetNext() == false)
+		{
+			//회원정보가 없음
+			this.DBClose();
+			return null;
+		}
+		userVO vo = new userVO();
+		vo.setUid(uid);
+		vo.setUno(this.GetValue("uno"));
+		vo.setUid(this.GetValue("uid"));
+		vo.setUname(this.GetValue("uname"));
+		vo.setUnick(this.GetValue("unick"));
+		vo.setAdmin(this.GetValue("admin"));
+		vo.setUicon(this.GetValue("uicon"));
+		vo.setEmail(this.GetValue("email"));
+		vo.setSeason(this.GetValue("season"));
+		vo.setLocal(this.GetValue("local"));
+		vo.setHuman(this.GetValue("human"));
+		vo.setMove(this.GetValue("move"));
+		vo.setSchedule(this.GetValue("schedule"));
+		vo.setUinout(this.GetValue("uinout"));
+		vo.setUstop(this.GetValue("ustop"));
+		this.DBClose();
+		return vo;
+	}
+	
+	//회원 탈퇴 처리
+	public boolean Retire(userVO vo)
+	{
+		if( this.DBOpen() == false )
+		{
+			return false;
+		}
+		String sql = "";
+		// 회원탈퇴여부 변경
+		sql  = "update user set ";
+		sql += "uretire = 'Y', ";
+		sql += "ureason = '" + vo.getUreason() + "' ";
+		sql += "where uno = " + vo.getUno();
+		this.RunSQL(sql);
+		
+		this.DBClose();
+		return true;
+	}
+	
+	//회원정지
+	public boolean Stop(userVO vo)
+	{
+		if( this.DBOpen() == false )
+		{
+			return false;
+		}
+		String sql = "";
+		
+		//회원정지
+		if(!vo.getUstopdate().equals("-1"))
+		{	// 1주일, 2주일, 한달 정지인 경우
+			sql  = "update user set ";
+			sql += "ustop = 'Y', ";
+			sql += "ustopdate = '" + vo.getUstopdate() + "', ";
+			sql += "ustopend = DATE_ADD(NOW(), INTERVAL " + vo.getUstopdate() + " DAY) ";
+			sql += "where uno = " + vo.getUno();
+			this.RunSQL(sql);
+		}else
+		{	// 영구정지인 경우
+			sql  = "update user set ";
+			sql += "ustop = 'Y' ";
+			sql += "where uno = " + vo.getUno();
+			this.RunSQL(sql);
+		}
+		
+		this.DBClose();
+		return true;
+	}
+	
+	//회원정지 해제
+	public boolean Stopend(String uid)
+	{
+		if( this.DBOpen() == false )
+		{
+			return false;
+		}
+		
+		String sql = "";
+		sql  = "update user set ";
+		sql += "ustop = 'N' ";
+		sql += "where uid = '" + uid + "' ";
+		sql += " and ustopend < date(now())";
+		this.RunSQL(sql);
+		
+		this.DBClose();
+		return true;
+	}
+	
+	//아이디 찾기 
+	public userVO Search(String uname,String email)
+	{
+		userVO vo = new userVO();
+		if( this.DBOpen() == false )
+		{
+			return vo;
+		}
+		String sql = "";
+		sql  = "select * ";
+		sql += "from user ";
+		sql += "where uname = '" + uname + "' and email = '" + email + "' ";
+		this.OpenQuery(sql);
+		if(this.GetNext() == true)
+		{	
+			vo.setUid(this.GetValue("uid"));
+			vo.setUname(this.GetValue("uname"));
+			this.DBClose();
+			return vo;
+		}else 
+		{
+			this.DBClose();
+			return vo;
+		}
+	}
+	
+	//회원정보 변경
+	public boolean Change(userVO vo)
+	{
+		if( this.DBOpen() == false )
+		{
+			return false;
+		}
+		String sql = "";
+		//비밀번호 변경
+		if(!vo.getUpw().equals(""))
+		{
+			sql  = "update user set ";
+			sql += "upw = md5('" + vo.getUpw() + "') ";
+			sql += "where uid = '" + vo.getUid() + "' ";
+			this.RunSQL(sql);
+		}
+		
+		this.DBClose();
+		return true;
+	}
+	
+	//내정보보기에서 수정
+	public boolean Change(String upw,userVO vo)
+	{
+		if( this.DBOpen() == false )
+		{
+			return false;
+		}
+		String sql = "";
+		//비밀번호 확인
+		sql  = "select * ";
+		sql += "from user ";
+		sql += "where upw = md5('" + upw + "') and uid = '" + vo.getUid() + "' ";
+		this.OpenQuery(sql);
+		if(this.GetNext() != true)
+		{	//비밀번호 틀림
+			this.DBClose();
+			return false;
+		}
+
+		//닉네임 변경
+		if(!vo.getUnick().equals("") && vo.getUnick() != null)
+		{
+			sql  = "update user set ";
+			sql += "unick = '" + vo.getUnick().replace("<","&lt;").replace(">","&gt;").replace("\n","\n<br>").replace("'", "''") + "' ";
+			sql += "where uid = '" + vo.getUid() + "' ";
+			this.RunSQL(sql);
+		}
+		//선호조건 변경
+		if(( !vo.getSeason().equals("") && !vo.getLocal().equals("") ) || ( vo.getSeason() != null && vo.getLocal() != null ))
+		{
+			sql  = "update user set ";
+			sql += "season = '" + vo.getSeason() + "', ";
+			sql += "local = '" + vo.getLocal() + "', ";
+			sql += "human = '" + vo.getHuman() + "', ";
+			sql += "move = '" + vo.getMove() + "', ";
+			sql += "schedule = '" + vo.getSchedule() + "', ";
+			sql += "uinout = '" + vo.getUinout() + "' ";
+			sql += "where uid = '" + vo.getUid() + "'";
+			this.RunSQL(sql);
+		}
+		
+		this.DBClose();
+		return true;
+	}
+	
+}

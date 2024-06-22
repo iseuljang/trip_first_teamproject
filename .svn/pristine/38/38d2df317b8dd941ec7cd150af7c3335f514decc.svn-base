@@ -1,0 +1,112 @@
+package trip.dto;
+
+import java.util.*;
+
+import trip.dao.*;
+import trip.vo.*;
+
+//댓글 정보 관리 클래스
+public class replyDTO extends DBManager
+{
+	//댓글을 등록한다
+	//리턴값 : true - 등록성공, false - 등록실패	
+	public boolean Insert(replyVO vo)
+	{
+		if( this.DBOpen() == false )
+		{
+			return false;
+		}
+		
+		// 댓글을 저장한다
+		String sql = "";
+		sql  = "insert into reply ";
+		sql += "(uno,bno,rnote,uicon) ";
+		sql += "values ";
+		sql += " ( ";
+		sql += "'" + vo.getUno()  + "', ";
+		sql += "'" + vo.getBno()   + "', ";
+		sql += "'" + this._R(vo.getRnote()).replace("<","&lt;").replace(">","&gt;").replace("\n","\n<br>")   + "', ";
+		sql += "'" + vo.getUicon() + "' ";
+		sql += " ) ";
+		this.RunSQL(sql);
+		
+		//등록된 댓글 번호를 얻는다.
+		sql = "select last_insert_id() as rno ";
+		this.OpenQuery(sql);
+		this.GetNext();
+		String rno = this.GetValue("rno");
+		vo.setRno(rno);
+		
+		this.DBClose();
+		return true;
+	}
+	
+	//댓글 정보를 변경한다.
+	//리턴값 : true - 변경성공, false - 변경실패	
+	public boolean Update(replyVO vo)
+	{
+		if( this.DBOpen() == false )
+		{
+			return false;
+		}
+		
+		//댓글 변경한다.
+		String sql = "";
+		sql  = "update reply ";
+		sql += "set ";
+		sql += "rnote = '" + this._R(vo.getRnote()).replace("<","&lt;").replace(">","&gt;").replace("\n","\n<br>") + "'  ";
+		sql += "where rno = '" + vo.getRno() + "' ";
+		this.RunSQL(sql);
+		
+		
+		this.DBClose();
+		return true;		
+	}
+	
+	//댓글을 삭제한다
+	//리턴값 : true - 등록성공, false - 등록실패	
+	public boolean Delete(String rno)
+	{
+		if( this.DBOpen() == false )
+		{
+			return false;
+		}
+		String sql = "";
+		sql = "delete from reply where rno = " + rno;
+		this.RunSQL(sql);
+		this.DBClose();
+		return true;
+	}
+	
+	//댓글 목록을 조회한다
+	public ArrayList<replyVO> GetList(String bno)
+	{
+		ArrayList<replyVO> list = new ArrayList<replyVO>();
+		if( this.DBOpen() == false )
+		{
+			return list;
+		}
+		String sql = "";
+		sql  = "select rno, uno, rnote, uicon, date(rwdate) as rwdate, ";
+		sql += "(select unick from user where uno = reply.uno) as unick ";
+		sql += "from reply ";
+		sql += "where bno = '" + bno + "' ";
+		sql += "order by rno desc ";
+		this.OpenQuery(sql);
+		while(this.GetNext() == true)
+		{
+			replyVO vo = new replyVO();
+			
+			vo.setRno(this.GetValue("rno"));
+			vo.setUno(this.GetValue("uno"));
+			vo.setUicon(this.GetValue("uicon"));
+			vo.setRnote(this.GetValue("rnote"));
+			vo.setRwdate(this.GetValue("rwdate"));
+			vo.setUnick(this.GetValue("unick"));
+			
+			list.add(vo);
+		}
+		this.DBClose();
+		return list;
+	}
+}
