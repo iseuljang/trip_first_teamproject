@@ -68,6 +68,7 @@
 
 💡트러블 슈팅
 -
+  1️⃣ 게시글 줄바꿈 처리 문제
   - 문제 배경
     - 게시글 수정 페이지로 넘어갈 경우, 게시글 조회 페이지의 줄바꿈이 <br> 태그로 보이며 수정 후에도 <br> 태그가 그대로 보여지는 문제가 발생했습니다.
   - 해결 방법
@@ -127,7 +128,71 @@
     
 - 해당 경험을 통해 알게 된 점
   - 게시글 조회 페이지에서는 게시글 내용이 td 안에서 표시되고, 수정 페이지에서는 textarea에 게시글 내용이 표시되어 이 문제가 발생한다는 것을 알게 되었습니다.
- 
+
+ 2️⃣ 회원정지 종료일 확인 문제
+  - 문제 배경
+    - 로그인 날짜를 기준으로 회원종료일이 되거나 지날 경우 회원 정지가 자동으로 해제되도록 구현하는 부분에서 date.format이 적용되지 않는 문제가 발생했습니다.
+  - 해결 방법
+    - Java date format을 사용하지 않고 SQL 문법으로 날짜비교하도록 수정하였습니다.
+  - 코드 비교
+    - 수정전 코드
+      ```
+        <!-- userDTO -->
+        //회원정지 해제
+      	public boolean Stopend(userVO vo)
+      	{
+      		if( this.DBOpen() == false )
+      		{
+      			return false;
+      		}
+      		// 현재 시간을 Date 객체로 가져옴
+      		Date date = new Date();
+      
+      		// SimpleDateFormat 객체 생성
+      		String datePattern = "yyyy-MM-dd";
+      		SimpleDateFormat format = new SimpleDateFormat(datePattern);
+      
+      		// 문자열로 변환
+      		String dateStr = format.format(date);
+      		String enddate = format.format(vo.getUstopend());
+      		String sql = "";
+      		if(enddate.equals(dateStr))
+      		{
+      			sql  = "update user set ";
+      			sql += "ustop = 'N' ";
+      			sql += "where uno = " + vo.getUno();
+      			this.RunSQL(sql);
+      		}
+      		
+      		this.DBClose();
+      		return true;
+      	}
+        ```        
+    - 수정후 코드
+       ```
+      <!-- userDTO -->
+      //회원정지 해제
+    	public boolean Stopend(String uid)
+    	{
+    		if( this.DBOpen() == false )
+    		{
+    			return false;
+    		}
+    		
+    		String sql = "";
+    		sql  = "update user set ";
+    		sql += "ustop = 'N', ";
+    		sql += "ustopdate = -1 ";
+    		sql += "where uid = '" + uid + "' ";
+    		sql += " and ustopend <= now()";
+    		this.RunSQL(sql);
+    		
+    		this.DBClose();
+    		return true;
+    	}
+      ```
+  - 해당 경험을 통해 알게 된 점
+    - Java 문법으로만 해결하려고 하기보다 SQL을 활용하면 보다 쉽게 해결할 수 있다는 것을 알게 되었습니다.
 
 📝개선할 부분
 -
