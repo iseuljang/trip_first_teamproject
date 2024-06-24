@@ -20,8 +20,8 @@ if(email == null || rearEmail == null || email.equals("")|| rearEmail.equals("")
 Sendmail sender = new Sendmail();
 //인증코드를 얻는다.
 String code = sender.AuthCode(6);
-sender.setFrom("gyr0204@naver.com");
-sender.setAccount("gyr0204", "zxcv1234!!");
+sender.setFrom("Naver_ID@naver.com");
+sender.setAccount("Naver_ID", "Naver_PW");
 
 //받는이를 유저가 입력한 이메일 주소로 설정
 //daum이나 hanmail일때, .net으로 주소 설정 
