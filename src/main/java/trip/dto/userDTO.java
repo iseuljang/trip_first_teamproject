@@ -430,26 +430,7 @@ public class userDTO<SendMail> extends DBManager
 		return true;
 	}
 	
-	//이메일 인증
-	public boolean Email(String email)
-	{
-		if( this.DBOpen() == false )
-		{
-			return false;
-		}
 		
-		Sendmail mail = new Sendmail();
-		//System.out.println(mail.AuthCode(7));
-		mail.setFrom("gyr0204@naver.com");
-		mail.setTo(email);
-		mail.setAccount("gyr0204", "zxcv1234!!");
-		mail.setMail("메일인증 코드입니다.", "인증코드 : " + mail.AuthCode(6));
-		mail.sendMail();
-		
-		this.DBClose();
-		return true;
-	}
-	
 	//닉네임 중복 확인
 	public boolean CheckUnick(String unick)
 	{	
