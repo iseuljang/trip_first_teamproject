@@ -8,6 +8,13 @@
 -
 <a href="http://jjezen.cafe24.com/bteam" target="_blank">http://jjezen.cafe24.com/bteam</a>
 
+<br>
+
+
+🔗 PPT
+-
+[실습프로젝트최종발표 ppt .pptx](https://github.com/user-attachments/files/18354473/ppt.pptx)
+
 
 <br>
 
