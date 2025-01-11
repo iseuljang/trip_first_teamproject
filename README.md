@@ -13,7 +13,8 @@
 
 🔗 PPT
 -
-[실습프로젝트최종발표 ppt .pptx](https://github.com/user-attachments/files/18354473/ppt.pptx)
+[실습프로젝트최종발표.pptx](https://github.com/user-attachments/files/18383711/default.pptx)
+
 
 
 <br>
