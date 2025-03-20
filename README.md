@@ -8,6 +8,8 @@
 -
 <a href="http://jjezen.cafe24.com/bteam" target="_blank">http://jjezen.cafe24.com/bteam</a>
 
+관리자 아이디 : admin<br>
+관리자 비밀번호 : admin<br>
 <br>
 
 
